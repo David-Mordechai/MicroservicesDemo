@@ -16,11 +16,17 @@ public class MapEntityController : ControllerBase
 
     public record MapEntity(string Title, double XPosition, double YPosition);
 
-    [HttpPost(Name = "AddMapEntity")]
+    [HttpPost]
     public IActionResult Post([FromServices] IPublisher publisher, [FromBody]MapEntity mapEntity)
     {
         _logger.LogInformation("Publishing new MapEntity - {mapEntity}", mapEntity);
         publisher.Publish(mapEntity, topic: "NewMapEntity");
         return Ok();
+    }
+
+    [HttpGet]
+    public string Get()
+    {
+        return "Hello";
     }
 }

@@ -1,6 +1,18 @@
 version: '3.4'
 
 services:
+  
+  ocelotapigw:
+    image: ${DOCKER_REGISTRY-}ocelotapigw
+    container_name: apiGw
+    build:
+      context: .
+      dockerfile: OcelotApiGw/Dockerfile
+    depends_on:
+      - aero_rabbitmq
+    networks:
+      - aero_network
+
   mapentitiesservice:
     image: ${DOCKER_REGISTRY-}mapentitiesservice
     container_name: aero_mapEntities
@@ -46,4 +58,6 @@ services:
       - aero_network
 
 networks:
-  aero_network: {}
+  aero_network: 
+    driver: bridge
+
