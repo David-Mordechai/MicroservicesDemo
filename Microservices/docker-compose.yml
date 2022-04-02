@@ -1,0 +1,49 @@
+version: '3.4'
+
+services:
+  mapentitiesservice:
+    image: ${DOCKER_REGISTRY-}mapentitiesservice
+    container_name: aero_mapEntities
+    build:
+      context: .
+      dockerfile: MapEntitiesService/Dockerfile
+    depends_on:
+      - aero_rabbitmq
+    networks:
+      - aero_network
+
+  mapsrepositoryservice:
+    image: ${DOCKER_REGISTRY-}mapsrepositoryservice
+    container_name: aero_mapsRepository
+    build:
+      context: .
+      dockerfile: MapsRepositoryService/Dockerfile
+    depends_on:
+      - aero_rabbitmq
+    networks:
+      - aero_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: aero_rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - aero_network
+  
+  seq:
+    image: datalust/seq
+    container_name: aero_seq
+    ports:
+      - 8003:80
+      - 5341:5341
+    volumes:
+      - C:\docker\data\seq:/data
+    environment:
+      ACCEPT_EULA: "Y"
+    networks:
+      - aero_network
+
+networks:
+  aero_network: {}

@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  mapentitiesservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 52000:80
+
+  mapsrepositoryservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 52001:80
+
