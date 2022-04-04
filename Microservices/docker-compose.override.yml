@@ -13,7 +13,6 @@ services:
     ports:
       - 52001:80
 
-
   ocelotapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

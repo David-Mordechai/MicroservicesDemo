@@ -4,7 +4,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.ConfigureAppConfiguration((context, configurationBuilder) =>
+builder.Host.ConfigureAppConfiguration((_, configurationBuilder) =>
 {
     configurationBuilder.AddJsonFile("ocelot.json");
 });

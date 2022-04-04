@@ -3,7 +3,7 @@ version: '3.4'
 services:
   
   ocelotapigw:
-    image: ${DOCKER_REGISTRY-}ocelotapigw
+    image: ocelotapigw
     container_name: apiGw
     build:
       context: .
@@ -14,7 +14,7 @@ services:
       - aero_network
 
   mapentitiesservice:
-    image: ${DOCKER_REGISTRY-}mapentitiesservice
+    image: mapentitiesservice
     container_name: aero_mapEntities
     build:
       context: .
@@ -25,7 +25,7 @@ services:
       - aero_network
 
   mapsrepositoryservice:
-    image: ${DOCKER_REGISTRY-}mapsrepositoryservice
+    image: mapsrepositoryservice
     container_name: aero_mapsRepository
     build:
       context: .
