@@ -10,7 +10,19 @@
         }
       ],
       "UpstreamPathTemplate": "/api/mapEntity",
-      "UpstreamHttpMethod": [ "Get", "POST" ]
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/maps",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "aero_mapsRepository",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/maps/addmap",
+      "UpstreamHttpMethod": [ "POST" ]
     }
   ],
   "GlobalConfiguration": {

@@ -3,8 +3,8 @@ version: '3.4'
 services:
   
   ocelotapigw:
-    image: ocelotapigw
-    container_name: apiGw
+    image:  ${DOCKER_REGISTRY-}ocelotapigw
+    container_name: ocelotapigw
     build:
       context: .
       dockerfile: OcelotApiGw/Dockerfile
@@ -13,8 +13,8 @@ services:
     networks:
       - aero_network
 
-  mapentitiesservice:
-    image: mapentitiesservice
+  aero_mapEntities:
+    image:  ${DOCKER_REGISTRY-}mapentitiesservice
     container_name: aero_mapEntities
     build:
       context: .
@@ -24,18 +24,24 @@ services:
     networks:
       - aero_network
 
-  mapsrepositoryservice:
-    image: mapsrepositoryservice
+  aero_mapsRepository:
+    image:  ${DOCKER_REGISTRY-}mapsrepositoryservice
     container_name: aero_mapsRepository
     build:
       context: .
       dockerfile: MapsRepositoryService/Dockerfile
     depends_on:
+      - mapsrepositoryservice_db
       - aero_rabbitmq
     networks:
       - aero_network
 
-  rabbitmq:
+  mapsrepositoryservice_db:
+    image: mongo
+    container_name: mapsrepositoryservice_db
+    restart: always
+
+  aero_rabbitmq:
     image: rabbitmq:3-management
     container_name: aero_rabbitmq
     ports:
@@ -44,7 +50,7 @@ services:
     networks:
       - aero_network
   
-  seq:
+  aero_seq:
     image: datalust/seq
     container_name: aero_seq
     ports:

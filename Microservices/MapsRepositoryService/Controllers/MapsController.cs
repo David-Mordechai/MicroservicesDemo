@@ -4,8 +4,10 @@ namespace MapsRepositoryService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MapController : ControllerBase
+public class MapsController : ControllerBase
 {
+    public record FileToUpload(string FileName, IFormFile File);
+
     [HttpGet("{id}")]
     public string Get(int id)
     {
@@ -13,8 +15,9 @@ public class MapController : ControllerBase
     }
 
     [HttpPost]
-    public void Post([FromBody] string value)
+    public IActionResult Post([FromForm]FileToUpload file)
     {
+        return Ok();
     }
     
 

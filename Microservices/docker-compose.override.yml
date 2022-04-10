@@ -1,13 +1,13 @@
 version: '3.4'
 
 services:
-  mapentitiesservice:
+  aero_mapEntities:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 52000:80
 
-  mapsrepositoryservice:
+  aero_mapsRepository:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
