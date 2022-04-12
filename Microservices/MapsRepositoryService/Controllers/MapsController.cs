@@ -9,7 +9,7 @@ namespace MapsRepositoryService.Controllers;
 [Route("[controller]")]
 public class MapsController : ControllerBase
 {
-    public record ViewModel(string? MapName, IFormFile? File);
+    public record ViewModel(string? FileName, IFormFile? File);
     public record ResultModel(bool Success, MapFileModel? MapFileModel, string ErrorMessage = "" );
 
     private readonly IAeroLogger<MapsController> _logger;
@@ -22,54 +22,56 @@ public class MapsController : ControllerBase
     }
 
     [HttpGet]
-    public IList<string> Get()
+    public async Task<IList<MapObjectModel>> Get()
     {
-        return _mapsRepository.GetAllMaps();
+        return await _mapsRepository.GetAllMapsAsync();
     }
 
-    [HttpGet("{mapName}")]
-    public ResultModel Get(string mapName)
+    [HttpGet("{mapFileName}")]
+    public async Task<ResultModel> Get(string mapFileName)
     {
-        if (string.IsNullOrWhiteSpace(mapName))
+        if (string.IsNullOrWhiteSpace(mapFileName))
             return new ResultModel(Success: false, MapFileModel: null, ErrorMessage: "Map name is required");
 
         try
         {
-            var result = _mapsRepository.GetMapByName(mapName);
+            var result = await _mapsRepository.GetMapByNameAsync(mapFileName);
             return new ResultModel(Success: true, MapFileModel: result);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return new ResultModel(Success: false, MapFileModel: null, ErrorMessage: $"Map {mapName} not found");
+            return new ResultModel(Success: false, MapFileModel: null, ErrorMessage: $"Map {mapFileName} not found");
         }
     }
 
     [HttpPost]
-    public string Post([FromForm] ViewModel viewModel)
+    public async Task<string> Post([FromForm] ViewModel viewModel)
     {
-        var (mapName, formFile) = viewModel;
-        if (string.IsNullOrWhiteSpace(mapName))
+        var (fileName, formFile) = viewModel;
+        if (string.IsNullOrWhiteSpace(fileName))
             return "File name is required";
 
         if (formFile is null)
             return "File is required";
 
+        var fileExtension = Path.GetExtension(formFile.FileName);
+        // Todo => validate file extension to allowed image format [jpeg, jpg, png, svg]
+        // Todo => abstract validations
+        
         try
         {
-            var fileMemoryStream = new MemoryStream();
-            formFile.OpenReadStream().CopyTo(fileMemoryStream);
             var mapFileModel = new MapFileModel
             {
-                MapName = mapName,
-                MapFile = fileMemoryStream
+                FileName = $"{fileName}{fileExtension}",
+                MapFile = formFile.OpenReadStream()
             };
 
-            _mapsRepository.AddMap(mapFileModel);
+            await _mapsRepository.AddMapAsync(mapFileModel);
         }
         catch (Exception e)
         {
-            var errorMessage = $"Fail to upload {mapName} file!";
+            var errorMessage = $"Fail to upload {fileName} file!";
             _logger.LogError(errorMessage, e);
             return errorMessage;
         }
@@ -78,19 +80,19 @@ public class MapsController : ControllerBase
     }
     
 
-    [HttpDelete("{mapName}")]
-    public string Delete(string mapName)
+    [HttpDelete("{mapFileName}")]
+    public string Delete(string mapFileName)
     {
-        if (string.IsNullOrWhiteSpace(mapName))
+        if (string.IsNullOrWhiteSpace(mapFileName))
             return "Map name is required!";
 
         try
         {
-            return _mapsRepository.DeleteMap(mapName);
+            return _mapsRepository.DeleteMap(mapFileName);
         }
         catch (Exception e)
         {
-            var errorMessage = $"Fail to delete {mapName} file!";
+            var errorMessage = $"Fail to delete {mapFileName} file!";
             _logger.LogError(errorMessage, e);
             return errorMessage;
         }

@@ -22,7 +22,7 @@ internal class MinIoClientBuilder : IMinIoClientBuilder
         try
         {
             var minIoClient = new MinioClient()
-                .WithEndpoint(new Uri(_configuration.BootstrapServers))
+                .WithEndpoint(_configuration.BootstrapServers)
                 .WithCredentials(_configuration.RootUser, _configuration.RootPassword)
                 .Build();
 

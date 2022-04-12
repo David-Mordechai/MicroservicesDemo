@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Dependencies\Aero.Core\Aero.Core.csproj" />
+	  <ProjectReference Include="..\..\Dependencies\Aero.Infrastructure\Aero.Infrastructure.csproj" />
 	  <ProjectReference Include="..\..\MapsRepositoryService.Infrastructure\MapsRepositoryService.Infrastructure.csproj" />
 	</ItemGroup>
 

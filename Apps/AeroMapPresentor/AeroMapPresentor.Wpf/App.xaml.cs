@@ -24,6 +24,7 @@ public partial class App
             .ConfigureServices(services =>
             {
                 services.AddAeroInfrastructure();
+                builder.Services.AddAeroInfrastructureServices();
                 services.AddMessageBrokerConsumerServicesRabbitMq(new RabbitMqConfiguration
                 {
                     BootstrapServers = "localhost"
