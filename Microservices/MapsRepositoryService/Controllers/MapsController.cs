@@ -40,7 +40,7 @@ public class MapsController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e.Message, e);
             return new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: $"Map {mapFileName} not found");
         }
     }
