@@ -20,10 +20,10 @@ internal class MapsRepository : IMapsRepository
         _minIoClient = minIoClientBuilder.Build(BucketName);
     }
 
-    public async Task<IList<MapObjectModel>> GetAllMapsAsync()
+    public async Task<IList<string>> GetAllMapsAsync()
     {
         IDisposable? subscription = null;
-        var result = new List<MapObjectModel>();
+        var result = new List<string>();
         try
         {
             var listArgs = new ListObjectsArgs()
@@ -32,7 +32,7 @@ internal class MapsRepository : IMapsRepository
             IObservable<Item> observable = _minIoClient.ListObjectsAsync(listArgs);
             
             subscription = observable.Subscribe(
-                item => result.Add(new MapObjectModel{Id = item.ETag, FileName = item.Key}),
+                item => result.Add(item.Key),
                 ex => _logger.LogError(ex.Message, ex));
 
             await observable;
@@ -51,27 +51,25 @@ internal class MapsRepository : IMapsRepository
         return result;
     }
 
-    public async Task<MapFileModel> GetMapByNameAsync(string mapFileName)
+    public async Task<string> GetMapByNameAsync(string mapFileName)
     {
         try
         {
-            var result = new MapFileModel();
+            var bytes = Array.Empty<byte>();
 
             var args = new GetObjectArgs()
                 .WithBucket(BucketName)
                 .WithObject(mapFileName)
                 .WithCallbackStream(stream =>
                 {
-                    var fileStream = File.Create(mapFileName);
-                    stream.CopyToAsync(fileStream);
-                    result.MapFile = fileStream;
-                    //fileStream.Dispose();
-                    stream.Dispose();
+                    using var ms = new MemoryStream();
+                    stream.CopyTo(ms);
+                    bytes = ms.ToArray();
                 });
 
             var stat = await _minIoClient.GetObjectAsync(args);
-            result.FileName = stat.ObjectName;
-
+            var ext = Path.GetExtension(stat.ObjectName).Replace(".", "");
+            var result = $"data:image/{ext};base64,{Convert.ToBase64String(bytes)}";
             return result;
         }
         catch (Exception e)
@@ -103,8 +101,22 @@ internal class MapsRepository : IMapsRepository
         }
     }
 
-    public string DeleteMap(string mapFileName)
+    public async Task DeleteMapAsync(string mapFileName)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var args = new RemoveObjectArgs()
+                .WithBucket(BucketName)
+                .WithObject(mapFileName);
+
+            Console.WriteLine("Running example for API: RemoveObjectAsync");
+            await _minIoClient.RemoveObjectAsync(args);
+        }
+        catch (Exception e)
+        {
+            const string errorMessage = "AddMapAsync method filed!";
+            _logger.LogError(errorMessage, e);
+            throw new InvalidOperationException(errorMessage);
+        }
     }
 }
