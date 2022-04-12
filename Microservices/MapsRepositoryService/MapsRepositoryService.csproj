@@ -16,4 +16,9 @@
 		<PackageReference Include="serilog.sinks.seq" Version="5.0.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Dependencies\Aero.Core\Aero.Core.csproj" />
+	  <ProjectReference Include="..\..\MapsRepositoryService.Infrastructure\MapsRepositoryService.Infrastructure.csproj" />
+	</ItemGroup>
+
 </Project>

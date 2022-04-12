@@ -1,3 +1,5 @@
+using MapsRepositoryService.Infrastructure;
+using MapsRepositoryService.Infrastructure.MinIo.Configuration;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -14,6 +16,13 @@ try
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+
+    builder.Services.AddMapsRepositoryServiceInfrastructure(new MinIoConfiguration
+    {
+        BootstrapServers = "localhost:9000",
+        RootUser = "access-key",
+        RootPassword = "secret-key"
+    });
 
     var app = builder.Build();
 

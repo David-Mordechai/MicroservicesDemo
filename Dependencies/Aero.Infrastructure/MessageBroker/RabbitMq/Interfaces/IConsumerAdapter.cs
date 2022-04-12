@@ -1,7 +1,6 @@
-﻿namespace Aero.Infrastructure.MessageBroker.RabbitMq.Interfaces
+﻿namespace Aero.Infrastructure.MessageBroker.RabbitMq.Interfaces;
+
+internal interface IConsumerAdapter
 {
-    internal interface IConsumerAdapter
-    {
-        void Subscribe(string topic, Action<string> consumeMessageHandler, CancellationToken cancellationToken);
-    }
+    void Subscribe(string topic, Action<string> consumeMessageHandler, CancellationToken cancellationToken);
 }

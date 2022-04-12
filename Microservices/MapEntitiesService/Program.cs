@@ -17,7 +17,6 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddAeroInfrastructure();
     builder.Services.AddMessageBrokerProducerServicesRabbitMq(new RabbitMqConfiguration
     {
         BootstrapServers = "aero_rabbitmq"
