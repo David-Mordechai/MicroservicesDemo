@@ -34,12 +34,11 @@ public partial class MainWindow
             await connection.StartAsync();
         };
 
-        connection.On<string>("NewMapPoint", (message) =>
+        connection.On<string>("NewMapPoint", message =>
         {
             this.Dispatcher.Invoke(() =>
             {
-                var newMessage = $"{message}";
-                _logger.LogInformation(newMessage);
+                _logger.LogInformation(message);
             });
         });
 

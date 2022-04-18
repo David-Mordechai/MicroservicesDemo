@@ -19,7 +19,7 @@ try
 
     builder.Services.AddMessageBrokerProducerServicesRabbitMq(new RabbitMqConfiguration
     {
-        BootstrapServers = "aero_rabbitmq"
+        BootstrapServers = builder.Configuration["brokerService"]
     });
 
     var app = builder.Build();

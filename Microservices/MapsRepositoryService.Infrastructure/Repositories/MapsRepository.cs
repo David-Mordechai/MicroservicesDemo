@@ -19,7 +19,6 @@ internal class MapsRepository : IMapsRepository
         _logger = logger;
         _minIoClient = minIoClientBuilder.Build(BucketName);
     }
-
     public async Task<IList<string>> GetAllMapsAsync()
     {
         IDisposable? subscription = null;

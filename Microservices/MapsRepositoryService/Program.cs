@@ -5,6 +5,7 @@ using Serilog;
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -19,14 +20,13 @@ try
 
     builder.Services.AddMapsRepositoryServiceInfrastructure(new MinIoConfiguration
     {
-        BootstrapServers = "mapsrepositoryservice_db:9000",
-        RootUser = "access-key",
-        RootPassword = "secret-key"
+        BootstrapServers = builder.Configuration["MapDB:MapDbService"],
+        RootUser = builder.Configuration["MapDB:MapDbRootUser"],
+        RootPassword = builder.Configuration["MapDB:MapDbRootPassword"]
     });
 
     var app = builder.Build();
 
-    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();

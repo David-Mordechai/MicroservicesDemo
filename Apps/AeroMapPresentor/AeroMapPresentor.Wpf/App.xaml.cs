@@ -13,6 +13,7 @@ public partial class App
     public App()
     {
         _host = Host.CreateDefaultBuilder()
+            .UseEnvironment("Development")
             .ConfigureLogging(builder =>
             {
                 builder.ClearProviders();

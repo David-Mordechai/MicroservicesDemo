@@ -18,7 +18,6 @@ public class NotificationsHub : Hub
         _subscriber = subscriber;
         _hubContext = hubContext;
     }
-    
 
     private (bool success, string errorMessage) ConsumeMessageHandler(string message)
     {
