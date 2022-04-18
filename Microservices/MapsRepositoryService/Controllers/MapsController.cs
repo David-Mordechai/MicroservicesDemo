@@ -1,5 +1,4 @@
-﻿using Aero.Core.Logger;
-using MapsRepositoryService.Core.Models;
+﻿using MapsRepositoryService.Core.Models;
 using MapsRepositoryService.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +11,10 @@ public class MapsController : ControllerBase
     public record ViewModel(string? FileName, IFormFile? File);
     public record ResultModel(bool Success, string MapFileAsBase64String, string ErrorMessage = "" );
 
-    private readonly IAeroLogger<MapsController> _logger;
+    private readonly ILogger<MapsController> _logger;
     private readonly IMapsRepository _mapsRepository;
 
-    public MapsController(IAeroLogger<MapsController> logger, IMapsRepository mapsRepository)
+    public MapsController(ILogger<MapsController> logger, IMapsRepository mapsRepository)
     {
         _logger = logger;
         _mapsRepository = mapsRepository;
@@ -40,7 +39,7 @@ public class MapsController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message, e);
+            _logger.LogError(e, "MapsController Get map by map name failed: {errorMessage}", e.Message);
             return new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: $"Map {mapFileName} not found");
         }
     }
@@ -74,7 +73,7 @@ public class MapsController : ControllerBase
         catch (Exception e)
         {
             var errorMessage = $"Fail to upload {fileName} file!";
-            _logger.LogError(errorMessage, e);
+            _logger.LogError(e, "MapsController, upload new map failed: {errorMessage}", errorMessage);
             return errorMessage;
         }
         
@@ -96,7 +95,7 @@ public class MapsController : ControllerBase
         catch (Exception e)
         {
             var errorMessage = $"Fail to delete {mapFileName} file!";
-            _logger.LogError(errorMessage, e);
+            _logger.LogError(e, "MapsController, Map delete failed: {errorMessage}", errorMessage);
             return errorMessage;
         }
     }

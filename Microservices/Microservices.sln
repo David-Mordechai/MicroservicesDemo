@@ -9,15 +9,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapsRepositoryService", "Ma
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3BEF987E-63E5-489A-9B01-9BD0E6091ADB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aero.Core", "..\Dependencies\Aero.Core\Aero.Core.csproj", "{E9A97281-A9BE-415A-BD80-471EB1B1F472}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBroker.Core", "MessageBroker.Core\MessageBroker.Core.csproj", "{E9A97281-A9BE-415A-BD80-471EB1B1F472}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aero.Infrastructure", "..\Dependencies\Aero.Infrastructure\Aero.Infrastructure.csproj", "{DB8751BC-CE9A-4598-B1D2-582D139250A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBroker.Infrastructure", "MessageBroker.Infrastructure\MessageBroker.Infrastructure.csproj", "{DB8751BC-CE9A-4598-B1D2-582D139250A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApiGw", "OcelotApiGw\OcelotApiGw.csproj", "{EE9EB452-0D58-4005-810E-7DF6A7736198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapsRepositoryService.Core", "..\MapsRepositoryService.Core\MapsRepositoryService.Core.csproj", "{AAC624E6-F82F-40D2-9BBB-87BD70F32A91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapsRepositoryService.Core", "MapsRepositoryService.Core\MapsRepositoryService.Core.csproj", "{AAC624E6-F82F-40D2-9BBB-87BD70F32A91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapsRepositoryService.Infrastructure", "..\MapsRepositoryService.Infrastructure\MapsRepositoryService.Infrastructure.csproj", "{B8D8A133-28E3-4D38-8B87-D43031203BC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapsRepositoryService.Infrastructure", "MapsRepositoryService.Infrastructure\MapsRepositoryService.Infrastructure.csproj", "{B8D8A133-28E3-4D38-8B87-D43031203BC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{09AD39B0-AD15-41FA-B1F1-F55C613617B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MapsRepositoryService", "MapsRepositoryService", "{FD5A72D6-DAF9-434E-A927-F5C4AD02DF05}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MapEntitiesService", "MapEntitiesService", "{E5960445-7235-4089-89AC-8A9F83FB846C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationsService", "NotificationsService\NotificationsService.csproj", "{A5E7DA3B-8BA6-424D-8312-EC600FAAEF04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,9 +65,21 @@ Global
 		{B8D8A133-28E3-4D38-8B87-D43031203BC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8D8A133-28E3-4D38-8B87-D43031203BC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8D8A133-28E3-4D38-8B87-D43031203BC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E7DA3B-8BA6-424D-8312-EC600FAAEF04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E7DA3B-8BA6-424D-8312-EC600FAAEF04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E7DA3B-8BA6-424D-8312-EC600FAAEF04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E7DA3B-8BA6-424D-8312-EC600FAAEF04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BFA44107-AB1B-4540-9CA0-75A74D5B3D08} = {E5960445-7235-4089-89AC-8A9F83FB846C}
+		{B1B41FF9-567B-4A32-B732-9D02F3BD7448} = {FD5A72D6-DAF9-434E-A927-F5C4AD02DF05}
+		{E9A97281-A9BE-415A-BD80-471EB1B1F472} = {09AD39B0-AD15-41FA-B1F1-F55C613617B6}
+		{DB8751BC-CE9A-4598-B1D2-582D139250A5} = {09AD39B0-AD15-41FA-B1F1-F55C613617B6}
+		{AAC624E6-F82F-40D2-9BBB-87BD70F32A91} = {FD5A72D6-DAF9-434E-A927-F5C4AD02DF05}
+		{B8D8A133-28E3-4D38-8B87-D43031203BC0} = {FD5A72D6-DAF9-434E-A927-F5C4AD02DF05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D15CC79-DE2D-4D8A-BA44-D996FFFC7180}

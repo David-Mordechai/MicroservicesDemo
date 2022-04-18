@@ -1,4 +1,4 @@
-using Aero.Core.MessageBroker;
+using MessageBroker.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapEntitiesService.Controllers;

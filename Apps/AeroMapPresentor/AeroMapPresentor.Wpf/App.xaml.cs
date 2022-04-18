@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using Aero.Infrastructure;
-using Aero.Infrastructure.MessageBroker.RabbitMq.Builder.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,15 +18,9 @@ public partial class App
                 builder.ClearProviders();
                 builder.AddDebug();
             }).
-            UseSerilog((_, configuration) => configuration.WriteTo.Seq("http://localhost:5341"))
+            UseSerilog((_, configuration) => configuration.WriteTo.Seq("http://localhost:5000/log"))
             .ConfigureServices(services =>
             {
-                services.AddAeroInfrastructure();
-                builder.Services.AddAeroInfrastructureServices();
-                services.AddMessageBrokerConsumerServicesRabbitMq(new RabbitMqConfiguration
-                {
-                    BootstrapServers = "localhost"
-                });
                 services.AddSingleton<MainWindow>();
             }).Build();
     }

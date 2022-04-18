@@ -12,6 +12,7 @@
       "UpstreamPathTemplate": "/api/mapEntity",
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
+
     {
       "DownstreamPathTemplate": "/maps",
       "DownstreamScheme": "http",
@@ -23,7 +24,48 @@
       ],
       "UpstreamPathTemplate": "/api/maps/addmap",
       "UpstreamHttpMethod": [ "POST" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "aero_seq",
+          "Port": 5341
+        }
+      ],
+      "UpstreamPathTemplate": "/log/{catchAll}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+    },
+
+    // Start SignalR configuration
+    // first block for negotiation
+    {
+      "DownstreamPathTemplate": "/ws",
+      "UpstreamPathTemplate": "/ws",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "notifications_service",
+          "Port": 80
+        }
+      ]
+    },
+    // second block for websocket connection
+    {
+      "DownstreamPathTemplate": "/ws/{catchAll}",
+      "UpstreamPathTemplate": "/ws/{catchAll}",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "notifications_service",
+          "Port": 80
+        }
+      ]
     }
+    // End SignalR configuration
+
   ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5000"

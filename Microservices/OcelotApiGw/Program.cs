@@ -8,7 +8,7 @@ builder.Host.ConfigureAppConfiguration((_, configurationBuilder) =>
 {
     configurationBuilder.AddJsonFile("ocelot.json");
 });
-
+builder.Services.AddSignalR();
 builder.Services.AddOcelot();
 
 builder.Host.UseSerilog((ctx, lc) => lc
@@ -17,6 +17,7 @@ builder.Host.UseSerilog((ctx, lc) => lc
 
 var app = builder.Build();
 
+app.UseWebSockets();
 await app.UseOcelot();
 
 app.Run();

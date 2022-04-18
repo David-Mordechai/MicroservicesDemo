@@ -39,7 +39,6 @@ services:
   mapsrepositoryservice_db:
     image: "minio/minio"
     container_name: mapsrepositoryservice_db
-    restart: always
     ports:
       - 9000:9000
       - 9001:9001
@@ -49,6 +48,15 @@ services:
       MINIO_ROOT_PASSWORD: secret-key
     volumes:
       - C:\docker\data\minio:/data
+    networks:
+      - aero_network
+
+  notifications_service:
+    image: ${DOCKER_REGISTRY-}notificationsservice
+    container_name: notifications_service
+    build:
+      context: .
+      dockerfile: NotificationsService/Dockerfile
     networks:
       - aero_network
 
@@ -74,7 +82,9 @@ services:
     networks:
       - aero_network
 
+
 networks:
   aero_network: 
     driver: bridge
+
 

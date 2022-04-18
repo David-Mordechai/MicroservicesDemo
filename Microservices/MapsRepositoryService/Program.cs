@@ -1,4 +1,3 @@
-using Aero.Infrastructure;
 using MapsRepositoryService.Infrastructure;
 using MapsRepositoryService.Infrastructure.MinIo.Configuration;
 using Serilog;
@@ -18,7 +17,6 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddAeroInfrastructureServices();
     builder.Services.AddMapsRepositoryServiceInfrastructure(new MinIoConfiguration
     {
         BootstrapServers = "mapsrepositoryservice_db:9000",

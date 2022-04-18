@@ -1,24 +1,55 @@
-﻿using System.Threading;
-using Aero.Core.Logger;
-using Aero.Core.MessageBroker;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 
 namespace AeroMapPresentor.Wpf;
 
 public partial class MainWindow
 {
-    private readonly IAeroLogger<MainWindow> _logger;
+    private readonly ILogger<MainWindow> _logger;
+    HubConnection connection;
 
-    public MainWindow(IAeroLogger<MainWindow> logger, ISubscriber subscriber)
+    public MainWindow(ILogger<MainWindow> logger)
     {
 
         _logger = logger;
-        subscriber.Subscribe("NewMapEntity", ConsumeMessageHandler, CancellationToken.None);
         InitializeComponent();
+        _logger.LogInformation("Wpf, MainWindow");
+
+        Task.Factory.StartNew(async () => await SignalRService());
     }
 
-    private (bool success, string errorMessage) ConsumeMessageHandler(string message)
+    private async Task SignalRService()
     {
-        _logger.LogInformation("Wpf, New AeroMapEntity {mapEntity}", message);
-        return (true,string.Empty);
+        connection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5000/ws",HttpTransportType.WebSockets)
+            //.WithAutomaticReconnect()
+            .Build();
+
+        connection.Closed += async (error) =>
+        {
+            await Task.Delay(new Random().Next(0, 5) * 1000);
+            await connection.StartAsync();
+        };
+
+        connection.On<string>("NewMapPoint", (message) =>
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                var newMessage = $"{message}";
+                _logger.LogInformation(newMessage);
+            });
+        });
+
+        try
+        {
+            await connection.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "SignalR => onNewMapPoint error");
+        }
     }
 }

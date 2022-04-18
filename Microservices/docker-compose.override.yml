@@ -19,3 +19,10 @@ services:
     ports:
       - 5000:80
 
+
+  notifications_service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 52002:80
+
