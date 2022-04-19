@@ -23,7 +23,6 @@ internal class Publisher : IPublisher
     {
         try
         {
-            // todo extract serialization logic from here
             var messageAsJson = JsonSerializer.Serialize(message);
             
             var deliveryResult = await _producer.ProduceAsync(topic, messageAsJson);

@@ -23,10 +23,4 @@ public class MapEntityController : ControllerBase
         publisher.Publish(mapEntity, topic: "NewMapEntity");
         return Ok();
     }
-
-    [HttpGet]
-    public string Get()
-    {
-        return "Hello";
-    }
 }

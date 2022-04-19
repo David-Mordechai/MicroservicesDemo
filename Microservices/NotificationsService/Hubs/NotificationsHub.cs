@@ -19,16 +19,24 @@ public class NotificationsHub : Hub
         _hubContext = hubContext;
     }
 
-    private (bool success, string errorMessage) ConsumeMessageHandler(string message)
+    public override Task OnConnectedAsync()
     {
-        _logger.LogInformation("NotificationsService, New AeroMapEntity {mapEntity}", message);
+        _subscriber.Subscribe("NewMapEntity", NewMapPointHandler, CancellationToken.None);
+        _subscriber.Subscribe("NewMapUploaded", NewMapHandler, CancellationToken.None);
+        return base.OnConnectedAsync();
+    }
+
+    private (bool success, string errorMessage) NewMapPointHandler(string message)
+    {
+        _logger.LogInformation("NotificationsService, New MapPoint {mapEntity}", message);
         _hubContext.Clients.All.SendAsync("NewMapPoint", message);
         return (true, string.Empty);
     }
 
-    public override Task OnConnectedAsync()
+    private (bool success, string errorMessage) NewMapHandler(string message)
     {
-        _subscriber.Subscribe("NewMapEntity", ConsumeMessageHandler, CancellationToken.None);
-        return base.OnConnectedAsync();
+        _logger.LogInformation("NotificationsService, New Map {mapFileName}", message);
+        _hubContext.Clients.All.SendAsync("NewMap", message);
+        return (true, string.Empty);
     }
 }

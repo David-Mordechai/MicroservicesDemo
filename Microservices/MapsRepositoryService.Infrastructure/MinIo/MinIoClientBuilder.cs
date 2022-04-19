@@ -10,7 +10,6 @@ internal class MinIoClientBuilder : IMinIoClientBuilder
     private readonly ILogger<MinIoClientBuilder> _logger;
     private readonly MinIoConfiguration _configuration;
 
-
     public MinIoClientBuilder(ILogger<MinIoClientBuilder> logger, MinIoConfiguration configuration)
     {
         _logger = logger;

@@ -1,5 +1,7 @@
 using MapsRepositoryService.Infrastructure;
 using MapsRepositoryService.Infrastructure.MinIo.Configuration;
+using MessageBroker.Infrastructure;
+using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -23,6 +25,11 @@ try
         BootstrapServers = builder.Configuration["MapDB:MapDbService"],
         RootUser = builder.Configuration["MapDB:MapDbRootUser"],
         RootPassword = builder.Configuration["MapDB:MapDbRootPassword"]
+    });
+
+    builder.Services.AddMessageBrokerProducerServicesRabbitMq(new RabbitMqConfiguration
+    {
+        BootstrapServers = builder.Configuration["brokerService"]
     });
 
     var app = builder.Build();
