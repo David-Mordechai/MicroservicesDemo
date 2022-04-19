@@ -30,7 +30,7 @@ public class UploadMapValidation : IUploadMapValidation
         validationResult = _fileValidator.IsFileSizeValid(file!);
         if (validationResult.Valid is false) return validationResult;
 
-        validationResult = _fileExtensionValidator.IsFileExtensionValid(fileExtension);
+        validationResult = _fileExtensionValidator.IsFileExtensionValid(fileExtension!);
         
         return validationResult.Valid is false ? validationResult : 
             (Valid: true, ErrorMessage: string.Empty);

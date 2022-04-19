@@ -16,9 +16,6 @@ services:
   ocelotapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - 5000:80
-
 
   notifications_service:
     environment:

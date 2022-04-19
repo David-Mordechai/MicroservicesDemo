@@ -8,6 +8,8 @@ services:
     build:
       context: .
       dockerfile: OcelotApiGw/Dockerfile
+    ports:
+      - 5000:80
     depends_on:
       - aero_rabbitmq
     networks:
@@ -81,7 +83,6 @@ services:
       ACCEPT_EULA: "Y"
     networks:
       - aero_network
-
 
 networks:
   aero_network: 
