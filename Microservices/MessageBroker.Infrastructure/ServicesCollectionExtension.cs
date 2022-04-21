@@ -12,9 +12,9 @@ public static class ServicesCollectionExtension
     public static void AddMessageBrokerProducerServicesRabbitMq(this IServiceCollection services,
         RabbitMqConfiguration rabbitMqConfiguration)
     {
-        services.AddScoped<IPublisher, Publisher>();
-        services.AddScoped(_ => new RabbitMqBuilderAdapter(rabbitMqConfiguration));
-        services.AddScoped<IProducerAdapter, RabbitMqProducerAdapter>();
+        services.AddSingleton<IPublisher, Publisher>();
+        services.AddSingleton(_ => new RabbitMqBuilderAdapter(rabbitMqConfiguration));
+        services.AddSingleton<IProducerAdapter, RabbitMqProducerAdapter>();
     }
 
     public static void AddMessageBrokerConsumerServicesRabbitMq(this IServiceCollection services,

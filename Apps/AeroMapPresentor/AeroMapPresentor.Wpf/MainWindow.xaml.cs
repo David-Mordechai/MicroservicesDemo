@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.AspNetCore.SignalR.Client;
+using AeroMapPresentor.Wpf.Services.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace AeroMapPresentor.Wpf;
@@ -9,72 +8,39 @@ namespace AeroMapPresentor.Wpf;
 public partial class MainWindow
 {
     private readonly ILogger<MainWindow> _logger;
-    HubConnection connection;
+    private readonly ISignalRService _signalRService;
+    private readonly Task<Task> _signalRTask;
 
-    public MainWindow(ILogger<MainWindow> logger)
+    public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService)
     {
-
         _logger = logger;
-        InitializeComponent();
+        _signalRService = signalRService;
         _logger.LogInformation("Wpf, MainWindow");
-
-        Task.Factory.StartNew(async () => await SignalRService());
+        _signalRTask = Task.Factory.StartNew(ConfigureSignalR);
+        InitializeComponent();
     }
 
-    private async Task SignalRService()
+    private async Task ConfigureSignalR()
     {
-        connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5000/ws",HttpTransportType.WebSockets)
-            .WithAutomaticReconnect(new RetryPolicy())
-            .Build();
-
-        connection.On<string>("NewMapPoint", message =>
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                _logger.LogInformation(message);
-            });
-        });
-
-        connection.On<string>("NewMap", message =>
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                _logger.LogInformation(message);
-            });
-        });
-
-        try
-        {
-            await connection.StartAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "SignalR => onNewMapPoint error");
-        }
+        await _signalRService.ConnectAsync();
+        _signalRService.NewMapPoint(NewMapPointEvent);
+        _signalRService.NewMap(NewMapEvent);
     }
 
-    private class RetryPolicy : IRetryPolicy
+    private void NewMapEvent(string message)
     {
-        ///<summary>
-        ///Retry count less then 50: interval 1s;
-        ///Retry count less then 250: interval 30s;
-        ///Retry count >= 250: interval 1m
-        ///</summary>
-        ///<param name="retryContext"></param>
-        ///<returns></returns>
-        public TimeSpan? NextRetryDelay(RetryContext retryContext)
-        {
-            var count = retryContext.PreviousRetryCount / 50;
+        _logger.LogInformation(message);
+    }
 
-            return count switch
-            {
-                // Retry count <50, interval 1s
-                < 50 => new TimeSpan(0, 0, 1),
-                // Retry count <250: interval 30s
-                < 250 => new TimeSpan(0, 0, 30),
-                _ => new TimeSpan(0, 1, 0)
-            };
-        }
+    private void NewMapPointEvent(string message)
+    {
+        _logger.LogInformation(message);
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        _signalRService.DisconnectAsync();
+        _signalRTask.Dispose();
+        base.OnClosing(e);
     }
 }

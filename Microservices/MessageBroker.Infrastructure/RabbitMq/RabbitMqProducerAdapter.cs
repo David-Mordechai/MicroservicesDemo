@@ -21,15 +21,14 @@ internal class RabbitMqProducerAdapter : IProducerAdapter, IDisposable
     {
         try
         {
-            _channel.ExchangeDeclare(exchange: topic, type: ExchangeType.Fanout);
-            var queueName = _channel.QueueDeclare().QueueName;
+            _channel.QueueDeclare(queue: topic,
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
-            _channel.QueueBind(queue: queueName,
-                exchange: topic,
-                routingKey: "");
-            
             var messageBytes = Encoding.UTF8.GetBytes(message);
-            _channel.BasicPublish(exchange: topic, routingKey: topic, basicProperties: null, messageBytes);
+            _channel.BasicPublish(exchange: "", routingKey: topic, basicProperties: null, messageBytes);
 
             return Task.FromResult(new MessageResultModel
             {

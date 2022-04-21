@@ -21,12 +21,11 @@ internal class RabbitMqConsumerAdapter : IConsumerAdapter, IDisposable
     {
         try
         {
-            _channel.ExchangeDeclare(exchange: topic, type: ExchangeType.Fanout);
-
-            var queueName = _channel.QueueDeclare().QueueName;
-            _channel.QueueBind(queue: queueName,
-                exchange: topic,
-                routingKey: "");
+            _channel.QueueDeclare(queue: topic,
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
             var consumer = new EventingBasicConsumer(_channel);
 
@@ -41,9 +40,7 @@ internal class RabbitMqConsumerAdapter : IConsumerAdapter, IDisposable
                 consumeMessageHandler?.Invoke(message);
             };
 
-            _channel.BasicConsume(queue: queueName,
-                autoAck: true,
-                consumer: consumer);
+            _channel.BasicConsume(queue: topic, autoAck: true, consumer: consumer);
         }
         catch (Exception ex)
         {

@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using AeroMapPresentor.Wpf.Services.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,6 +24,8 @@ public partial class App
             UseSerilog((_, configuration) => configuration.WriteTo.Seq("http://localhost:5000/log"))
             .ConfigureServices(services =>
             {
+                services.AddSingleton<IRetryPolicy, RetryPolicy>();
+                services.AddSingleton<ISignalRService, SignalRService>();
                 services.AddSingleton<MainWindow>();
             }).Build();
     }
