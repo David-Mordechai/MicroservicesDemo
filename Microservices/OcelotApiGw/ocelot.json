@@ -52,8 +52,6 @@
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
     },
 
-    // Start SignalR configuration
-    // first block for negotiation
     {
       "DownstreamPathTemplate": "/ws",
       "UpstreamPathTemplate": "/ws",
@@ -65,7 +63,6 @@
         }
       ]
     },
-    // second block for websocket connection
     {
       "DownstreamPathTemplate": "/ws/{catchAll}",
       "UpstreamPathTemplate": "/ws/{catchAll}",
@@ -77,7 +74,6 @@
         }
       ]
     }
-    // End SignalR configuration
 
   ],
   "GlobalConfiguration": {

@@ -59,6 +59,9 @@ services:
     build:
       context: .
       dockerfile: NotificationsService/Dockerfile
+    depends_on:
+      - aero_rabbitmq
+    restart: unless-stopped
     networks:
       - aero_network
 
