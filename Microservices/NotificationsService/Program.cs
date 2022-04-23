@@ -38,8 +38,7 @@ try
     });
 
     var notificationsSubscriber = app.Services.GetRequiredService<NotificationsSubscriber>();
-    notificationsSubscriber.NewMapPointSubscribe();
-    notificationsSubscriber.NewMapSubscribe();
+    notificationsSubscriber.Subscribe();
 
     app.Run();
 }

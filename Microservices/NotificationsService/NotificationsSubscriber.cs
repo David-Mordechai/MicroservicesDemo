@@ -19,12 +19,18 @@ public class NotificationsSubscriber
         _newMapEventHandler = newMapEventHandler;
     }
 
-    public void NewMapPointSubscribe()
+    public void Subscribe()
+    {
+        NewMapPointSubscribe();
+        NewMapSubscribe();
+    }
+
+    private void NewMapPointSubscribe()
     {
         _subscriber.Subscribe("NewMapEntity", _newMapPointEventHandler.NewMapPoint, CancellationToken.None);
     }
 
-    public void NewMapSubscribe()
+    private void NewMapSubscribe()
     {
         _subscriber.Subscribe("NewMapUploaded", _newMapEventHandler.NewMap, CancellationToken.None);
     }
