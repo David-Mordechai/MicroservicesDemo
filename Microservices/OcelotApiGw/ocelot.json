@@ -10,8 +10,9 @@
         }
       ],
       "UpstreamPathTemplate": "/api/mapEntity",
-      "UpstreamHttpMethod": [ "GET", "POST" ]
+      "UpstreamHttpMethod": [ "POST" ]
     },
+
     {
       "DownstreamPathTemplate": "/maps",
       "DownstreamScheme": "http",
@@ -21,9 +22,59 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/maps/addmap",
-      "UpstreamHttpMethod": [ "POST" ]
+      "UpstreamPathTemplate": "/api/maps",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/maps/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "aero_mapsRepository",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/maps/{catchAll}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "aero_seq",
+          "Port": 5341
+        }
+      ],
+      "UpstreamPathTemplate": "/log/{catchAll}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/ws",
+      "UpstreamPathTemplate": "/ws",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "notifications_service",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/ws/{catchAll}",
+      "UpstreamPathTemplate": "/ws/{catchAll}",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "notifications_service",
+          "Port": 80
+        }
+      ]
     }
+
   ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5000"

@@ -1,4 +1,4 @@
-using Aero.Core.MessageBroker;
+using MessageBroker.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapEntitiesService.Controllers;
@@ -22,11 +22,5 @@ public class MapEntityController : ControllerBase
         _logger.LogInformation("Publishing new MapEntity - {mapEntity}", mapEntity);
         publisher.Publish(mapEntity, topic: "NewMapEntity");
         return Ok();
-    }
-
-    [HttpGet]
-    public string Get()
-    {
-        return "Hello";
     }
 }

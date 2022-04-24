@@ -17,8 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Dependencies\Aero.Core\Aero.Core.csproj" />
-    <ProjectReference Include="..\..\Dependencies\Aero.Infrastructure\Aero.Infrastructure.csproj" />
+    <ProjectReference Include="..\MessageBroker.Infrastructure\MessageBroker.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MessageBroker.Core">
+      <HintPath>..\MessageBroker.Core\bin\Debug\net6.0\MessageBroker.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-using Aero.Infrastructure;
-using Aero.Infrastructure.MessageBroker.RabbitMq.Builder.Configuration;
+using MessageBroker.Infrastructure;
+using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -17,10 +17,9 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddAeroInfrastructureServices();
     builder.Services.AddMessageBrokerProducerServicesRabbitMq(new RabbitMqConfiguration
     {
-        BootstrapServers = "aero_rabbitmq"
+        BootstrapServers = builder.Configuration["brokerService"]
     });
 
     var app = builder.Build();

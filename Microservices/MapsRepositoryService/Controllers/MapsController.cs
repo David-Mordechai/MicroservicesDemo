@@ -1,6 +1,7 @@
-﻿using Aero.Core.Logger;
-using MapsRepositoryService.Core.Models;
+﻿using MapsRepositoryService.Core.Models;
 using MapsRepositoryService.Core.Repositories;
+using MapsRepositoryService.Core.Validation.Interfaces;
+using MessageBroker.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapsRepositoryService.Controllers;
@@ -9,16 +10,24 @@ namespace MapsRepositoryService.Controllers;
 [Route("[controller]")]
 public class MapsController : ControllerBase
 {
-    public record ViewModel(string? FileName, IFormFile? File);
     public record ResultModel(bool Success, string MapFileAsBase64String, string ErrorMessage = "" );
+    public record UploadMapViewModel(string? FileName, IFormFile? File);
 
-    private readonly IAeroLogger<MapsController> _logger;
+    private readonly ILogger<MapsController> _logger;
     private readonly IMapsRepository _mapsRepository;
+    private readonly IUploadMapValidation _uploadMapValidation;
+    private readonly IPublisher _publisher;
 
-    public MapsController(IAeroLogger<MapsController> logger, IMapsRepository mapsRepository)
+    public MapsController(
+        ILogger<MapsController> logger, 
+        IMapsRepository mapsRepository,
+        IUploadMapValidation uploadMapValidation,
+        IPublisher publisher)
     {
         _logger = logger;
         _mapsRepository = mapsRepository;
+        _uploadMapValidation = uploadMapValidation;
+        _publisher = publisher;
     }
 
     [HttpGet]
@@ -40,48 +49,43 @@ public class MapsController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message, e);
+            _logger.LogError(e, "MapsController Get map by map name failed: {errorMessage}", e.Message);
             return new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: $"Map {mapFileName} not found");
         }
     }
 
     [HttpPost]
-    public async Task<string> Post([FromForm] ViewModel viewModel)
+    public async Task<string> Post([FromForm] UploadMapViewModel uploadMapViewModel)
     {
-        // Todo => abstract validations
-        var (fileName, formFile) = viewModel;
-        if (string.IsNullOrWhiteSpace(fileName))
-            return "File name is required";
-
-        if (formFile is null)
-            return "File is required";
-
-        var fileExtension = Path.GetExtension(formFile.FileName);
-        // Todo => validate file extension to allowed image format [jpeg, jpg, png, svg]
-        // Todo => validate map width, height ???
-        // Todo => validate map file size (less then 500kb) ???
-
         try
         {
+            var (fileName, file) = uploadMapViewModel;
+            var fileExtension = Path.GetExtension(file?.FileName);
+            var fileStream = file?.OpenReadStream();
+
+            var (valid, errorMessage) = _uploadMapValidation.Validate(fileName, fileExtension, fileStream);
+            if (valid is false)
+                return errorMessage;
+
             var mapFileModel = new MapFileModel
             {
                 FileName = $"{fileName}{fileExtension}",
-                MapFile = formFile.OpenReadStream()
+                MapFile = fileStream
             };
 
             await _mapsRepository.AddMapAsync(mapFileModel);
+            await _publisher.Publish(mapFileModel.FileName, "NewMapUploaded");
         }
         catch (Exception e)
         {
-            var errorMessage = $"Fail to upload {fileName} file!";
-            _logger.LogError(errorMessage, e);
+            const string errorMessage = "Fail to upload!";
+            _logger.LogError(e, "MapsController, upload new map failed: {errorMessage}", errorMessage);
             return errorMessage;
         }
         
-        return "File uploaded";
+        return "File uploaded!";
     }
     
-
     [HttpDelete("{mapFileName}")]
     public async Task<string> Delete(string mapFileName)
     {
@@ -96,7 +100,7 @@ public class MapsController : ControllerBase
         catch (Exception e)
         {
             var errorMessage = $"Fail to delete {mapFileName} file!";
-            _logger.LogError(errorMessage, e);
+            _logger.LogError(e, "MapsController, Map delete failed: {errorMessage}", errorMessage);
             return errorMessage;
         }
     }

@@ -1,0 +1,21 @@
+<mat-card class="entity-card">
+    <mat-card-title>Create Map Entity</mat-card-title>
+    <form class="entity-form" [formGroup]="mapEntityForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="standard">
+            <mat-label>Entity Title</mat-label>
+            <input type="text" matInput formControlName="title">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Entity X Position</mat-label>
+            <input type="number" matInput formControlName="xPosition">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Entity Y Position</mat-label>
+            <input type="number" matInput formControlName="yPosition">
+        </mat-form-field>
+        <button class="createButton" mat-raised-button color="primary">Create</button>
+    </form>
+</mat-card>
+

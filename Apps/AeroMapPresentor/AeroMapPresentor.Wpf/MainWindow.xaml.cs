@@ -1,24 +1,46 @@
-﻿using System.Threading;
-using Aero.Core.Logger;
-using Aero.Core.MessageBroker;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
+using AeroMapPresentor.Wpf.Services.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace AeroMapPresentor.Wpf;
 
 public partial class MainWindow
 {
-    private readonly IAeroLogger<MainWindow> _logger;
+    private readonly ILogger<MainWindow> _logger;
+    private readonly ISignalRService _signalRService;
+    private readonly Task<Task> _signalRTask;
 
-    public MainWindow(IAeroLogger<MainWindow> logger, ISubscriber subscriber)
+    public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService)
     {
-
         _logger = logger;
-        subscriber.Subscribe("NewMapEntity", ConsumeMessageHandler, CancellationToken.None);
+        _signalRService = signalRService;
+        _logger.LogInformation("Wpf, MainWindow");
+        _signalRTask = Task.Factory.StartNew(ConfigureSignalR);
         InitializeComponent();
     }
 
-    private (bool success, string errorMessage) ConsumeMessageHandler(string message)
+    private async Task ConfigureSignalR()
     {
-        _logger.LogInformation("Wpf, New AeroMapEntity {mapEntity}", message);
-        return (true,string.Empty);
+        await _signalRService.ConnectAsync();
+        _signalRService.NewMapPoint(NewMapPointEvent);
+        _signalRService.NewMap(NewMapEvent);
+    }
+
+    private void NewMapEvent(string message)
+    {
+        _logger.LogInformation(message);
+    }
+
+    private void NewMapPointEvent(string message)
+    {
+        _logger.LogInformation(message);
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        _signalRService.DisconnectAsync();
+        _signalRTask.Dispose();
+        base.OnClosing(e);
     }
 }

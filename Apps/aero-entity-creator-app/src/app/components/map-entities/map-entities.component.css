@@ -1,0 +1,17 @@
+.entity-card {
+    margin: auto;
+    margin-top: 10px;
+    width: 90%;
+    padding: 10px;
+
+}
+
+.entity-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.createButton{
+    width: 100%;
+}

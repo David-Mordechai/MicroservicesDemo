@@ -1,11 +1,13 @@
-using Aero.Infrastructure;
 using MapsRepositoryService.Infrastructure;
 using MapsRepositoryService.Infrastructure.MinIo.Configuration;
+using MessageBroker.Infrastructure;
+using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -18,17 +20,20 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddAeroInfrastructureServices();
     builder.Services.AddMapsRepositoryServiceInfrastructure(new MinIoConfiguration
     {
-        BootstrapServers = "mapsrepositoryservice_db:9000",
-        RootUser = "access-key",
-        RootPassword = "secret-key"
+        BootstrapServers = builder.Configuration["MapDB:MapDbService"],
+        RootUser = builder.Configuration["MapDB:MapDbRootUser"],
+        RootPassword = builder.Configuration["MapDB:MapDbRootPassword"]
+    });
+
+    builder.Services.AddMessageBrokerProducerServicesRabbitMq(new RabbitMqConfiguration
+    {
+        BootstrapServers = builder.Configuration["brokerService"]
     });
 
     var app = builder.Build();
 
-    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
