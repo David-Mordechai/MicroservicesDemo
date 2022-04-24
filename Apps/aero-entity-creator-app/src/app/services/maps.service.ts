@@ -1,18 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MapEntityService {
+export class MapsService {
 
   private URL: string = environment.baseApiUrl
   constructor(private http: HttpClient) { }
 
-  public postMapEntity(formData: any) {
-    return this.http.post(`${this.URL}mapEntity`, formData).subscribe({
-      error: error => console.log(error)
-    });
+  getMaps(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.URL}maps`)
   }
 }

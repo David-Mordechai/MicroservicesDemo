@@ -1,1 +1,17 @@
-<p>maps works!</p>
+<mat-card class="maps-card">
+    <mat-card-title>Maps repository</mat-card-title>
+    <mat-drawer-container class="drawer-container">
+        <mat-drawer mode="side" opened>
+            <mat-selection-list #shoes [multiple]="false"  *ngIf="(maps | async) as items">
+                <div mat-subheader>
+                    <mat-icon>folder</mat-icon>
+                    <mat-label>Maps</mat-label>
+                </div>
+                <mat-list-option *ngFor="let item of items" [value]="item" (click)="loadMap(item)">
+                    <mat-icon mat-list-icon>map</mat-icon>{{item}}
+                </mat-list-option>
+              </mat-selection-list>
+        </mat-drawer>
+        <mat-drawer-content>Main content</mat-drawer-content>
+    </mat-drawer-container>
+</mat-card>

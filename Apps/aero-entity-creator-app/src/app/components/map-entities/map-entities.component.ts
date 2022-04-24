@@ -22,7 +22,6 @@ export class MapEntitiesComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // Process checkout data here
     this.mapEntityService.postMapEntity(this.mapEntityForm.value);
     console.log('New map entity was submitted', this.mapEntityForm.value);
     this.mapEntityForm.reset();

@@ -28,13 +28,8 @@ internal class MapsRepository : IMapsRepository
             var listArgs = new ListObjectsArgs()
                 .WithBucket(BucketName);
             
-            IObservable<Item> observable = _minIoClient.ListObjectsAsync(listArgs);
-
-            subscription = observable.Subscribe(
-                item => result.Add(item.Key),
-                ex => throw new Exception(ex.Message));
-
-            await observable;
+            var queryResult = await _minIoClient.ListObjectsAsync(listArgs).ToList();
+            result.AddRange(queryResult.Select(item => item.Key));
         }
         catch (Exception e)
         {

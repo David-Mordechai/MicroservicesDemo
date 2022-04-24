@@ -15,8 +15,21 @@ builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.Console()
     .ReadFrom.Configuration(ctx.Configuration));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "corsPolicy",
+        policyBuilder =>
+        {
+            policyBuilder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
 
+app.UseCors("corsPolicy");
 app.UseWebSockets();
 await app.UseOcelot();
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
+import { MapsService } from 'src/app/services/maps.service';
 
 @Component({
   selector: 'app-maps',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MapsComponent implements OnInit {
 
-  constructor() { }
-
+  maps!: Observable<string[]>;
+  constructor(private mapsService: MapsService) { }
+  
   ngOnInit(): void {
+    this.loadData();
   }
 
+  private loadData() {
+    this.maps = this.mapsService.getMaps();
+  }
+
+  loadMap(map: string){
+    console.log(map);
+  }
 }

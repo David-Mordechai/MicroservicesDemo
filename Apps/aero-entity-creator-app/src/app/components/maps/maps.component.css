@@ -1,0 +1,18 @@
+.maps-card {
+    margin: auto;
+    margin-top: 10px;
+    width: 90%;
+    min-width: 800px;
+    min-height: 500px;
+    padding: 10px;
+}
+
+.drawer-container {
+    width: 100%;
+    min-height: 500px;
+    /* border: 1px solid #555; */
+  }
+
+  mat-drawer{
+      width: 250px;
+  }
