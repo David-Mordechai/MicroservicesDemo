@@ -7,6 +7,7 @@ import { AppComponent } from './components/app/app.component';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { MapEntitiesComponent } from './components/map-entities/map-entities.component';
 import { MapsComponent } from './components/maps/maps.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MapsComponent } from './components/maps/maps.component';
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule 
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
