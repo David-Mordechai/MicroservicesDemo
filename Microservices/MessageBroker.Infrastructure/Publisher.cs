@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using MessageBroker.Core;
 using MessageBroker.Core.Models;
-using MessageBroker.Infrastructure.RabbitMq.Interfaces;
+using MessageBroker.Infrastructure.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace MessageBroker.Infrastructure;

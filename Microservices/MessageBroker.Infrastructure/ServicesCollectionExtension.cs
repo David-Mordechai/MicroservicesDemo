@@ -1,8 +1,8 @@
 ﻿using MessageBroker.Core;
+using MessageBroker.Infrastructure.Interfaces;
 using MessageBroker.Infrastructure.RabbitMq;
 using MessageBroker.Infrastructure.RabbitMq.Builder;
 using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
-using MessageBroker.Infrastructure.RabbitMq.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MessageBroker.Infrastructure;

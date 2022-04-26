@@ -16,22 +16,19 @@ public class MapsController : ControllerBase
     private readonly ILogger<MapsController> _logger;
     private readonly IMapsRepository _mapsRepository;
     private readonly IUploadMapValidation _uploadMapValidation;
-    private readonly IPublisher _publisher;
 
     public MapsController(
         ILogger<MapsController> logger, 
         IMapsRepository mapsRepository,
-        IUploadMapValidation uploadMapValidation,
-        IPublisher publisher)
+        IUploadMapValidation uploadMapValidation)
     {
         _logger = logger;
         _mapsRepository = mapsRepository;
         _uploadMapValidation = uploadMapValidation;
-        _publisher = publisher;
     }
 
     [HttpGet]
-    public async Task<IList<string>> Get()
+    public async Task<IList<MapListItemModel>> Get()
     {
         return await _mapsRepository.GetAllMapsAsync();
     }
@@ -55,7 +52,7 @@ public class MapsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<string> Post([FromForm] UploadMapViewModel uploadMapViewModel)
+    public async Task<IActionResult> Post([FromForm] UploadMapViewModel uploadMapViewModel)
     {
         try
         {
@@ -63,9 +60,13 @@ public class MapsController : ControllerBase
             var fileExtension = Path.GetExtension(file?.FileName);
             var fileStream = file?.OpenReadStream();
 
+            // todo => more validations
+            // 1. duplicate file name, also expose api end point for client side validation
+            // 2. length file name, no white spaces, less then 10 characters, only numbers and latter allowed
+
             var (valid, errorMessage) = _uploadMapValidation.Validate(fileName, fileExtension, fileStream);
             if (valid is false)
-                return errorMessage;
+                return BadRequest(errorMessage);
 
             var mapFileModel = new MapFileModel
             {
@@ -74,34 +75,35 @@ public class MapsController : ControllerBase
             };
 
             await _mapsRepository.AddMapAsync(mapFileModel);
-            await _publisher.Publish(mapFileModel.FileName, "NewMapUploaded");
         }
         catch (Exception e)
         {
             const string errorMessage = "Fail to upload!";
             _logger.LogError(e, "MapsController, upload new map failed: {errorMessage}", errorMessage);
-            return errorMessage;
+            return BadRequest(errorMessage);
         }
         
-        return "File uploaded!";
+        return Ok();
     }
     
     [HttpDelete("{mapFileName}")]
-    public async Task<string> Delete(string mapFileName)
+    public async Task<IActionResult> Delete(string mapFileName)
     {
         if (string.IsNullOrWhiteSpace(mapFileName))
-            return "Map name is required!";
+            return BadRequest("Map name is required!");
 
         try
         {
             await _mapsRepository.DeleteMapAsync(mapFileName);
-            return "Map deleted successfully!";
+            return Ok();
         }
         catch (Exception e)
         {
             var errorMessage = $"Fail to delete {mapFileName} file!";
             _logger.LogError(e, "MapsController, Map delete failed: {errorMessage}", errorMessage);
-            return errorMessage;
+            return Problem(errorMessage);
         }
     }
+
+    
 }

@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using MessageBroker.Infrastructure.Interfaces;
 using MessageBroker.Infrastructure.RabbitMq.Builder;
-using MessageBroker.Infrastructure.RabbitMq.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 

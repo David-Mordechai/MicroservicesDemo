@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using NotificationsService.EventHandlers.Interfaces;
+using NotificationsService.Commands.Interfaces;
 using NotificationsService.Hubs;
 
-namespace NotificationsService.EventHandlers
+namespace NotificationsService.Commands
 {
-    public class NewMapPointEventHandler : INewMapPointEventHandler
+    public class NewMapPointCommand : INewMapPointCommand
     {
-        private readonly ILogger<NewMapPointEventHandler> _logger;
+        private readonly ILogger<NewMapPointCommand> _logger;
         private readonly IHubContext<NotificationsHub> _hubContext;
 
-        public NewMapPointEventHandler(
-            ILogger<NewMapPointEventHandler> logger,
+        public NewMapPointCommand(
+            ILogger<NewMapPointCommand> logger,
             IHubContext<NotificationsHub> hubContext)
         {
             _logger = logger;

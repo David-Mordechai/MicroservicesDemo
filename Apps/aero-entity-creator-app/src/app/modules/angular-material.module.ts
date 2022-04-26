@@ -28,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
    imports: [
@@ -59,7 +60,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       FormsModule,
       ReactiveFormsModule,
       MatSlideToggleModule,
-      MatTabsModule
+      MatTabsModule,
+      MatDialogModule
    ],
    exports: [
       MatButtonModule,
@@ -88,7 +90,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       FormsModule,
       ReactiveFormsModule,
       MatSlideToggleModule,
-      MatTabsModule
+      MatTabsModule,
+      MatDialogModule
    ],
    providers: [
       MatDatepickerModule

@@ -4,5 +4,5 @@ namespace MapsRepositoryService.Infrastructure.MinIo;
 
 internal interface IMinIoClientBuilder
 {
-    MinioClient Build(string bucketName);
+    MinioClient Build(string bucketName, string missionBucketName);
 }

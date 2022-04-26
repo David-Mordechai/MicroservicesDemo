@@ -1,0 +1,22 @@
+
+<h1 mat-dialog-title>Upload New Map</h1>
+<div mat-dialog-content>
+    <form [formGroup]="fileForm">
+  
+        <mat-form-field appearance="standard">
+            <mat-label>File Name</mat-label>
+            <input type="text" matInput formControlName="fileName">
+        </mat-form-field>
+    
+        <div>
+            <input type="file" formControlName="file" (change)="onSelectFile($event)" >
+        </div>
+        <br>
+        
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button type="button" (click)="onSubmit(fileForm.value)" mat-raised-button color="primary">Upload Map</button>
+    <button mat-button mat-dialog-close>Close</button>
+</div>
+

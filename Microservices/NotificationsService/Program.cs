@@ -2,8 +2,8 @@ using MessageBroker.Infrastructure;
 using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
 using Microsoft.AspNetCore.Http.Connections;
 using NotificationsService;
-using NotificationsService.EventHandlers;
-using NotificationsService.EventHandlers.Interfaces;
+using NotificationsService.Commands;
+using NotificationsService.Commands.Interfaces;
 using NotificationsService.Hubs;
 using Serilog;
 
@@ -23,8 +23,8 @@ try
         {
             BootstrapServers = builder.Configuration["brokerService"]
         });
-    builder.Services.AddSingleton<INewMapPointEventHandler, NewMapPointEventHandler>();
-    builder.Services.AddSingleton<INewMapEventHandler, NewMapEventHandler>();
+    builder.Services.AddSingleton<INewMapPointCommand, NewMapPointCommand>();
+    builder.Services.AddSingleton<INewMapCommand, NewMapCommand>();
 
     builder.Services.AddSignalR();
 

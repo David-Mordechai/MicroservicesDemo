@@ -1,4 +1,4 @@
-﻿namespace MessageBroker.Infrastructure.RabbitMq.Interfaces;
+﻿namespace MessageBroker.Infrastructure.Interfaces;
 
 internal interface IConsumerAdapter
 {

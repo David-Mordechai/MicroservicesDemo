@@ -8,18 +8,22 @@ import { AngularMaterialModule } from './modules/angular-material.module';
 import { MapEntitiesComponent } from './components/map-entities/map-entities.component';
 import { MapsComponent } from './components/maps/maps.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapEntitiesComponent,
-    MapsComponent
+    MapsComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule 
   ],
   providers: [],

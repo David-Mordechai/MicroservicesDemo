@@ -1,22 +1,22 @@
 ﻿using MessageBroker.Core;
-using NotificationsService.EventHandlers.Interfaces;
+using NotificationsService.Commands.Interfaces;
 
 namespace NotificationsService;
 
 public class NotificationsSubscriber
 {
     private readonly ISubscriber _subscriber;
-    private readonly INewMapPointEventHandler _newMapPointEventHandler;
-    private readonly INewMapEventHandler _newMapEventHandler;
+    private readonly INewMapPointCommand _newMapPointCommand;
+    private readonly INewMapCommand _newMapCommand;
 
     public NotificationsSubscriber(
         ISubscriber subscriber,
-        INewMapPointEventHandler newMapPointEventHandler,
-        INewMapEventHandler newMapEventHandler)
+        INewMapPointCommand newMapPointCommand,
+        INewMapCommand newMapCommand)
     {
         _subscriber = subscriber;
-        _newMapPointEventHandler = newMapPointEventHandler;
-        _newMapEventHandler = newMapEventHandler;
+        _newMapPointCommand = newMapPointCommand;
+        _newMapCommand = newMapCommand;
     }
 
     public void Subscribe()
@@ -27,11 +27,11 @@ public class NotificationsSubscriber
 
     private void NewMapPointSubscribe()
     {
-        _subscriber.Subscribe("NewMapEntity", _newMapPointEventHandler.NewMapPoint, CancellationToken.None);
+        _subscriber.Subscribe("NewMapEntity", _newMapPointCommand.NewMapPoint, CancellationToken.None);
     }
 
     private void NewMapSubscribe()
     {
-        _subscriber.Subscribe("NewMapUploaded", _newMapEventHandler.NewMap, CancellationToken.None);
+        _subscriber.Subscribe("NewMissionMap", _newMapCommand.NewMap, CancellationToken.None);
     }
 }

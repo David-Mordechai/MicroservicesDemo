@@ -16,7 +16,7 @@ internal class MinIoClientBuilder : IMinIoClientBuilder
         _configuration = configuration;
     }
 
-    public MinioClient Build(string bucketName)
+    public MinioClient Build(string bucketName, string missionBucketName)
     {
         try
         {
@@ -29,6 +29,7 @@ internal class MinIoClientBuilder : IMinIoClientBuilder
                 throw new InvalidOperationException("minIoClient is null");
 
             CreateMapsBucket(minIoClient, bucketName).ConfigureAwait(false).GetAwaiter().GetResult();
+            CreateMapsBucket(minIoClient, missionBucketName).ConfigureAwait(false).GetAwaiter().GetResult();
 
             return minIoClient;
         }

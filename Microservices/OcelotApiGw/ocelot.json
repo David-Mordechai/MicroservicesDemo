@@ -40,6 +40,19 @@
     },
 
     {
+      "DownstreamPathTemplate": "/mapMission",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "aero_mapsRepository",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/mission",
+      "UpstreamHttpMethod": [ "GET", "POST", "OPTIONS" ]
+    },
+
+    {
       "DownstreamPathTemplate": "/{catchAll}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

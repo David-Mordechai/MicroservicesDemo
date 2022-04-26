@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using MessageBroker.Core.Models;
+using MessageBroker.Infrastructure.Interfaces;
 using MessageBroker.Infrastructure.RabbitMq.Builder;
-using MessageBroker.Infrastructure.RabbitMq.Interfaces;
 using RabbitMQ.Client;
 
 namespace MessageBroker.Infrastructure.RabbitMq;

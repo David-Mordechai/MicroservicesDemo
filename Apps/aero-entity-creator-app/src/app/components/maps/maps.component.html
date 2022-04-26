@@ -2,16 +2,30 @@
     <mat-card-title>Maps repository</mat-card-title>
     <mat-drawer-container class="drawer-container">
         <mat-drawer mode="side" opened>
-            <mat-selection-list #shoes [multiple]="false"  *ngIf="(maps | async) as items">
-                <div mat-subheader>
-                    <mat-icon>folder</mat-icon>
-                    <mat-label>Maps</mat-label>
-                </div>
-                <mat-list-option *ngFor="let item of items" [value]="item" (click)="loadMap(item)">
-                    <mat-icon mat-list-icon>map</mat-icon>{{item}}
-                </mat-list-option>
-              </mat-selection-list>
+            <div class="listWrapper">
+                <button class="uploadBtn" mat-stroked-button color="primary" (click)="openDialog()">Upload New Map</button>
+                <mat-selection-list class="mat-list" [multiple]="false" *ngIf="(maps | async) as items">
+                    <mat-list-option *ngFor="let item of items" [value]="item.mapName" (click)="loadMap(item)">
+                        <mat-icon mat-list-icon>map</mat-icon>
+                        <div>
+                            {{item.mapName}}
+                            <mat-icon class="mission-icon" *ngIf="item.isMissionMap">star</mat-icon>
+                        </div> 
+                        
+                    </mat-list-option>
+                </mat-selection-list>
+            </div>
         </mat-drawer>
-        <mat-drawer-content>Main content</mat-drawer-content>
+        <mat-drawer-content>
+            <div *ngIf="(mapBase64 | async) as mapBase64">
+                <section>
+                    <div class="flex-container">
+                        <button [disabled]="selectedMap!.isMissionMap" mat-raised-button color="primary" (click)="setMissionMap()">Set as Mission Map</button>
+                        <button [disabled]="selectedMap!.isMissionMap" mat-raised-button color="warn" (click)="deleteMap()">Delete Map</button>
+                    </div>
+                </section>
+                <img class="mapImg" [src]="mapBase64" />
+            </div>
+        </mat-drawer-content>
     </mat-drawer-container>
 </mat-card>
