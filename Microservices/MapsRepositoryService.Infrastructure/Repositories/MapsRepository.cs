@@ -171,7 +171,7 @@ internal class MapsRepository : IMapsRepository
         try
         {
             var missionMap = await GetMissionMapNameAsync();
-            if (string.IsNullOrWhiteSpace(missionMap) is false)
+            if (string.IsNullOrWhiteSpace(missionMap))
                 return string.Empty;
 
             var bytes = Array.Empty<byte>();
@@ -186,9 +186,8 @@ internal class MapsRepository : IMapsRepository
                     bytes = ms.ToArray();
                 });
 
-            var stat = await _minIoClient.GetObjectAsync(args);
-            var ext = Path.GetExtension(stat.ObjectName).Replace(".", "");
-            var result = $"data:image/{ext};base64,{Convert.ToBase64String(bytes)}";
+            await _minIoClient.GetObjectAsync(args);
+            var result = $"{Convert.ToBase64String(bytes)}";
             return result;
         }
         catch (Exception e)

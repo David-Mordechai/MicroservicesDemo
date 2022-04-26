@@ -26,17 +26,17 @@ namespace MapsRepositoryService.Controllers
         }
 
         [HttpGet]
-        public async Task<ResultModel> Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
                 var result = await _mapsRepository.GetMissionMapAsync();
-                return new ResultModel(Success: true, MapFileAsBase64String: result);
+                return Ok(new ResultModel(Success: true, MapFileAsBase64String: result));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "MapMissionController Get map by map name failed: {errorMessage}", e.Message);
-                return new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: "Mission map not found");
+                return Ok(new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: "Mission map not found"));
             }
         }
 

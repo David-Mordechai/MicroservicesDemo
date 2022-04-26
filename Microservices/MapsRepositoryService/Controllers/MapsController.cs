@@ -104,6 +104,4 @@ public class MapsController : ControllerBase
             return Problem(errorMessage);
         }
     }
-
-    
 }

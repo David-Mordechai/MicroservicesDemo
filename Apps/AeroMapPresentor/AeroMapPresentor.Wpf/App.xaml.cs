@@ -24,8 +24,10 @@ public partial class App
             UseSerilog((_, configuration) => configuration.WriteTo.Seq("http://localhost:5000/log"))
             .ConfigureServices(services =>
             {
+                services.AddHttpClient();
                 services.AddSingleton<IRetryPolicy, RetryPolicy>();
                 services.AddSingleton<ISignalRService, SignalRService>();
+                services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
                 services.AddSingleton<MainWindow>();
             }).Build();
     }
