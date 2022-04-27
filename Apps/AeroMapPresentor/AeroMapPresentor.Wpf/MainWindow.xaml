@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="{Binding ImageSource}" Stretch="Fill" />
+        <Image Grid.Row="0" Grid.Column="0" Source="{Binding ImageSource}" Stretch="Fill" />
+        <Canvas Grid.Row="0" Grid.Column="0" x:Name="CanvasEntities"/>
     </Grid>
 </Window>
