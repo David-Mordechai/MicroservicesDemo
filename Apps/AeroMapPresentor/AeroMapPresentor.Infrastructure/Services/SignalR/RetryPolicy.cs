@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 
-namespace AeroMapPresentor.Wpf.Services.SignalR;
+namespace AeroMapPresentor.Infrastructure.Services.SignalR;
 
 public class RetryPolicy : IRetryPolicy
 {

@@ -3,7 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AeroMapPresentor.Wpf" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        xmlns:local="clr-namespace:AeroMapPresentor.Wpf"
+        xmlns:viewModels="clr-namespace:AeroMapPresentor.Wpf.ViewModels"
+        xmlns:viewModels1="clr-namespace:AeroMapPresentor.Wpf.ViewModels;assembly=AeroMapPresentor.Infrastructure"
+        d:DataContext="{d:DesignInstance Type=viewModels1:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1200" >
     <Grid>

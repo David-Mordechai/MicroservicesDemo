@@ -1,7 +1,8 @@
 ﻿using System.Windows;
-using AeroMapPresentor.Wpf.Services.SignalR;
-using AeroMapPresentor.Wpf.ViewModels;
-using Microsoft.AspNetCore.SignalR.Client;
+using AeroMapPresentor.Infrastructure;
+using AeroMapPresentor.Wpf.UiComponents;
+using AeroMapPresentor.Wpf.UiComponents.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,19 +16,26 @@ public partial class App
     public App()
     {
         _host = Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration( builder =>
+            {
+                builder.Sources.Clear();
+                // appsettings.json Important!!!
+                // change in file properties => "Copy To Output Directory" to "Copy Always"
+                builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            })
             .UseEnvironment("Development")
             .ConfigureLogging(builder =>
             {
                 builder.ClearProviders();
                 builder.AddDebug();
-            }).
-            UseSerilog((_, configuration) => configuration.WriteTo.Seq("http://localhost:5000/log"))
+            })
+            .UseSerilog((context, loggerConfiguration) =>
+                loggerConfiguration.ReadFrom.Configuration(context.Configuration))
             .ConfigureServices(services =>
             {
                 services.AddHttpClient();
-                services.AddSingleton<IRetryPolicy, RetryPolicy>();
-                services.AddSingleton<ISignalRService, SignalRService>();
-                services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
+                services.AddTransient<IEllipseEntityUiCreator, EllipseEntityUiCreator>();
+                services.AddAeroMapPresenterInfrastructureServices();
                 services.AddSingleton<MainWindow>();
             }).Build();
     }

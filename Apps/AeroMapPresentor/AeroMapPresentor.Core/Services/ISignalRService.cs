@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace AeroMapPresentor.Wpf.Services.SignalR;
+﻿namespace AeroMapPresentor.Core.Services;
 
 public interface ISignalRService
 {

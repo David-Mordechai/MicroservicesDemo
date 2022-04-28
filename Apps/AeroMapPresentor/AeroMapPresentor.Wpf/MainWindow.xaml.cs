@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
-using System.Threading;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
-using AeroMapPresentor.Wpf.Services.SignalR;
-using AeroMapPresentor.Wpf.ViewModels;
+using AeroMapPresentor.Core.Services;
+using AeroMapPresentor.Core.ViewModels;
+using AeroMapPresentor.Wpf.UiComponents.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace AeroMapPresentor.Wpf;
@@ -14,42 +16,59 @@ public partial class MainWindow
     private readonly ILogger<MainWindow> _logger;
     private readonly ISignalRService _signalRService;
     private readonly Task<Task> _signalRTask;
-    private readonly IMainWindowViewModel _mainWindowVm;
+    private readonly IMainWindowViewModel _mainWindowViewModel;
+    private readonly IEllipseEntityUiCreator _ellipseEntityUiCreator;
 
-    public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService, IMainWindowViewModel mainWindowView)
+    public record MapEntity(string Title, double XPosition, double YPosition);
+
+    public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService, 
+        IMainWindowViewModel mainWindowView, IEllipseEntityUiCreator ellipseEntityUiCreator)
     {
         InitializeComponent();
         _logger = logger;
+        _logger.LogInformation("Wpf, MainWindow");
+        
         _signalRService = signalRService;
         _signalRTask = Task.Factory.StartNew(ConfigureSignalR);
-        
-        _logger.LogInformation("Wpf, MainWindow");
 
-        _mainWindowVm = mainWindowView;
-        DataContext = _mainWindowVm;
-        _mainWindowVm.SetImageSource();
+        _mainWindowViewModel = mainWindowView;
+        _ellipseEntityUiCreator = ellipseEntityUiCreator;
+        _mainWindowViewModel.SetMissionMapImageSource();
+        DataContext = _mainWindowViewModel;
     }
 
     private async Task ConfigureSignalR()
     {
         await _signalRService.ConnectAsync();
         _signalRService.NewMapPoint(NewMapPointCommand);
-        _signalRService.NewMap(NewMapCommand);
+        _signalRService.NewMap(NewMissionMapCommand);
     }
 
-    private void NewMapCommand(string message)
+    private void NewMissionMapCommand(string newMissionMapName)
     {
-        _logger.LogInformation(message);
-        Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, 
-            async () => await _mainWindowVm.SetImageSource());
+        _logger.LogInformation("AeroMapPresentor.Wpf => New Mission Map: {newMissionMapName}", newMissionMapName);
+        Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal,
+        async () =>
+        {
+            await _mainWindowViewModel.SetMissionMapImageSource();
+            CanvasEntities.Children.Clear();
+        });
     }
 
-    private void NewMapPointCommand(string message)
+    private void NewMapPointCommand(string newMapEntity)
     {
-        _logger.LogInformation(message);
+        _logger.LogInformation("AeroMapPresentor.Wpf => New Mission Map: {newMapEntity}", newMapEntity);
         Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, () =>
         {
-            _mainWindowVm.CreateMapEntity(message, CanvasEntities);
+            var mapEntity = JsonSerializer.Deserialize<MapEntity>(newMapEntity,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            
+            if(mapEntity is null) return;
+            
+            var stackPanel = _ellipseEntityUiCreator.Create(mapEntity);
+            CanvasEntities.Children.Add(stackPanel);
+            Canvas.SetTop(stackPanel, mapEntity.XPosition);
+            Canvas.SetLeft(stackPanel, mapEntity.YPosition);
         });
     }
 
