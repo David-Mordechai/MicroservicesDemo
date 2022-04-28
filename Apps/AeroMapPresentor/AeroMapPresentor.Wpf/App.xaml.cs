@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using AeroMapPresentor.Wpf.Services.SignalR;
+using AeroMapPresentor.Wpf.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +11,6 @@ namespace AeroMapPresentor.Wpf;
 
 public partial class App
 {
-    
     private readonly IHost _host;
     public App()
     {
