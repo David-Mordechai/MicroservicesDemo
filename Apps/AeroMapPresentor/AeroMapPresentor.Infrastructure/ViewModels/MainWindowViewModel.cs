@@ -4,7 +4,7 @@ using AeroMapPresentor.Core.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace AeroMapPresentor.Wpf.ViewModels;
+namespace AeroMapPresentor.Infrastructure.ViewModels;
 
 public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
 {

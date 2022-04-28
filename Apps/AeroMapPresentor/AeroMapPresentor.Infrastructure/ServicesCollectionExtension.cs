@@ -1,7 +1,7 @@
 ﻿using AeroMapPresentor.Core.Services;
 using AeroMapPresentor.Core.ViewModels;
 using AeroMapPresentor.Infrastructure.Services.SignalR;
-using AeroMapPresentor.Wpf.ViewModels;
+using AeroMapPresentor.Infrastructure.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 
