@@ -1,4 +1,5 @@
-﻿using MapsRepositoryService.Core.Repositories;
+﻿using MapsRepositoryService.Core.Models;
+using MapsRepositoryService.Core.Repositories;
 using MessageBroker.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace MapsRepositoryService.Controllers
         private readonly IMapsRepository _mapsRepository;
         private readonly IPublisher _publisher;
 
-        public record ResultModel(bool Success, string MapFileAsBase64String, string ErrorMessage = "");
+        public record ResultModel(bool Success, MapResultModel MapFileAsBase64String, string ErrorMessage = "");
         public record SetMissionMapModel(string MapName);
 
         public MapMissionController(
@@ -36,7 +37,7 @@ namespace MapsRepositoryService.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "MapMissionController Get map by map name failed: {errorMessage}", e.Message);
-                return Ok(new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: "Mission map not found"));
+                return Ok(new ResultModel(Success: false, MapFileAsBase64String: new MapResultModel(), ErrorMessage: "Mission map not found"));
             }
         }
 

@@ -14,7 +14,7 @@ public class MapEntityController : ControllerBase
         _logger = logger;
     }
 
-    public record MapEntity(string Title, double XPosition, double YPosition);
+    public record MapEntity(string Title, double XPosition, double YPosition, double MapWidth, double MapHeight);
 
     [HttpPost]
     public IActionResult Post([FromServices] IPublisher publisher, [FromBody]MapEntity mapEntity)

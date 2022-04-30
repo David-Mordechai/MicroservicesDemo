@@ -8,7 +8,6 @@ namespace AeroMapPresentor.Infrastructure.ViewModels;
 
 public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
 {
-    private const string Api = "http://localhost:5000/api";
     private readonly ILogger<MainWindowViewModel> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
@@ -25,7 +24,9 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    public record ResultModel(bool Success, string MapFileAsBase64String, string ErrorMessage = "");
+
+    public record MapResultModel(string ImageMetaData, string ImageBase64);
+    public record ResultModel(bool Success, MapResultModel MapFileAsBase64String, string ErrorMessage = "");
 
     public MainWindowViewModel(ILogger<MainWindowViewModel> logger, 
         IHttpClientFactory httpClientFactory, IConfiguration configuration)
@@ -48,7 +49,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
 
             if (resultModel is { Success: true })
             {
-                ImageSource = Convert.FromBase64String(resultModel.MapFileAsBase64String);
+                ImageSource = Convert.FromBase64String(resultModel.MapFileAsBase64String.ImageBase64);
             }
         }
         catch (Exception e)

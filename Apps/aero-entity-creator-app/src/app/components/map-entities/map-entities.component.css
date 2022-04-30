@@ -1,9 +1,31 @@
+.mapEntityWrapper{
+    display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  /* align-items: flex-end; */
+}
 .entity-card {
-    margin: auto;
+    /* margin: auto; */
     margin-top: 10px;
-    width: 90%;
+    width: 200px;
+    height: 280px;
     padding: 10px;
 
+}
+
+.map-card {
+    /* margin: auto; */
+    margin-top: 10px;
+    width: 75%;
+    padding: 10px;
+    min-width: 800px;
+}
+
+.imageDiv{
+    height: 600px;
+    width: 100%;
+    
+    background-size: 100% 100%;
 }
 
 .entity-form {
@@ -14,4 +36,12 @@
 
 .createButton{
     width: 100%;
+}
+
+.target{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(128, 0, 128, 0.4);
+    position: relative;
 }

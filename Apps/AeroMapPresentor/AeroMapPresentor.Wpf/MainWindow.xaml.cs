@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using AeroMapPresentor.Core.Models;
 using AeroMapPresentor.Core.Services;
 using AeroMapPresentor.Core.ViewModels;
 using AeroMapPresentor.Wpf.UiComponents.Interfaces;
@@ -18,8 +19,8 @@ public partial class MainWindow
     private readonly Task<Task> _signalRTask;
     private readonly IMainWindowViewModel _mainWindowViewModel;
     private readonly IEllipseEntityUiCreator _ellipseEntityUiCreator;
-
-    public record MapEntity(string Title, double XPosition, double YPosition);
+    private double _windowHeight;
+    private double _windowWidth;
 
     public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService, 
         IMainWindowViewModel mainWindowView, IEllipseEntityUiCreator ellipseEntityUiCreator)
@@ -35,6 +36,14 @@ public partial class MainWindow
         _ellipseEntityUiCreator = ellipseEntityUiCreator;
         _mainWindowViewModel.SetMissionMapImageSource();
         DataContext = _mainWindowViewModel;
+
+        this.SizeChanged += OnWindowSizeChanged;
+    }
+
+    private void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+         _windowHeight = e.NewSize.Height;
+         _windowWidth = e.NewSize.Width;
     }
 
     private async Task ConfigureSignalR()
@@ -65,10 +74,11 @@ public partial class MainWindow
             
             if(mapEntity is null) return;
             
-            var stackPanel = _ellipseEntityUiCreator.Create(mapEntity);
+            var (stackPanel, top, left) = _ellipseEntityUiCreator.Create(mapEntity, _windowHeight, _windowWidth);
+            
             CanvasEntities.Children.Add(stackPanel);
-            Canvas.SetTop(stackPanel, mapEntity.XPosition);
-            Canvas.SetLeft(stackPanel, mapEntity.YPosition);
+            Canvas.SetTop(stackPanel, top);
+            Canvas.SetLeft(stackPanel, left);
         });
     }
 

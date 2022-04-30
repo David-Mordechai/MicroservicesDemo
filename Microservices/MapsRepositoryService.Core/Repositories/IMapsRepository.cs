@@ -5,10 +5,10 @@ namespace MapsRepositoryService.Core.Repositories;
 public interface IMapsRepository
 {
     Task<IList<MapListItemModel>> GetAllMapsAsync();
-    Task<string> GetMapByNameAsync(string mapFileName);
+    Task<MapResultModel> GetMapByNameAsync(string mapFileName);
     Task AddMapAsync(MapFileModel mapFileModel);
     Task DeleteMapAsync(string mapFileName);
 
     Task SetMissionMapAsync(string mapName);
-    Task<string> GetMissionMapAsync();
+    Task<MapResultModel> GetMissionMapAsync();
 }

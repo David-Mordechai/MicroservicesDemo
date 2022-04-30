@@ -28,7 +28,7 @@ export class MapsComponent implements OnInit {
   loadMap(selectedMap: mapListItem){
       this.mapsService.getMap(selectedMap.mapName).subscribe({next: (response) => {
         if(response && response.success){ 
-          this.mapBase64 = of(response.mapFileAsBase64String);
+          this.mapBase64 = of(`${response.mapFileAsBase64String.imageMetaData},${response.mapFileAsBase64String.imageBase64}`);
           this.selectedMap = selectedMap;
         }
         else{

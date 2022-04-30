@@ -7,7 +7,10 @@ import { mapListItem } from '../models/mapListItem';
 interface getMapResponse {
   success: boolean,
   errorMessage: string,
-  mapFileAsBase64String: string,
+  mapFileAsBase64String: {
+    imageMetaData: string,
+    imageBase64: string
+  },
 }
 
 @Injectable({
@@ -24,6 +27,10 @@ export class MapsService {
 
   getMap(mapName: string): Observable<getMapResponse> {
     return this.http.get<getMapResponse>(`${this.URL}maps/${mapName}`)
+  }
+
+  getMissionMap(): Observable<getMapResponse> {
+    return this.http.get<getMapResponse>(`${this.URL}mission`)
   }
 
   uploadMap(formData: FormData) {

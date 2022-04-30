@@ -10,7 +10,7 @@ namespace MapsRepositoryService.Controllers;
 [Route("[controller]")]
 public class MapsController : ControllerBase
 {
-    public record ResultModel(bool Success, string MapFileAsBase64String, string ErrorMessage = "" );
+    public record ResultModel(bool Success, MapResultModel MapFileAsBase64String, string ErrorMessage = "" );
     public record UploadMapViewModel(string? FileName, IFormFile? File);
 
     private readonly ILogger<MapsController> _logger;
@@ -37,7 +37,7 @@ public class MapsController : ControllerBase
     public async Task<ResultModel> Get(string mapFileName)
     {
         if (string.IsNullOrWhiteSpace(mapFileName))
-            return new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: "Map name is required");
+            return new ResultModel(Success: false, MapFileAsBase64String: new MapResultModel(), ErrorMessage: "Map name is required");
 
         try
         {
@@ -47,7 +47,7 @@ public class MapsController : ControllerBase
         catch (Exception e)
         {
             _logger.LogError(e, "MapsController Get map by map name failed: {errorMessage}", e.Message);
-            return new ResultModel(Success: false, MapFileAsBase64String: "", ErrorMessage: $"Map {mapFileName} not found");
+            return new ResultModel(Success: false, MapFileAsBase64String: new MapResultModel(), ErrorMessage: $"Map {mapFileName} not found");
         }
     }
 
