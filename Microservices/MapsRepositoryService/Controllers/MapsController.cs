@@ -12,6 +12,7 @@ public class MapsController : ControllerBase
 {
     public record ResultModel(bool Success, MapResultModel MapFileAsBase64String, string ErrorMessage = "" );
     public record UploadMapViewModel(string? FileName, IFormFile? File);
+    public record UploadMapResultModel(bool Success, string ErrorMessage = "" );
 
     private readonly ILogger<MapsController> _logger;
     private readonly IMapsRepository _mapsRepository;
@@ -52,7 +53,7 @@ public class MapsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromForm] UploadMapViewModel uploadMapViewModel)
+    public async Task<UploadMapResultModel> Post([FromForm] UploadMapViewModel uploadMapViewModel)
     {
         try
         {
@@ -66,7 +67,7 @@ public class MapsController : ControllerBase
 
             var (valid, errorMessage) = _uploadMapValidation.Validate(fileName, fileExtension, fileStream);
             if (valid is false)
-                return BadRequest(errorMessage);
+                return new UploadMapResultModel(false, errorMessage);
 
             var mapFileModel = new MapFileModel
             {
@@ -80,10 +81,10 @@ public class MapsController : ControllerBase
         {
             const string errorMessage = "Fail to upload!";
             _logger.LogError(e, "MapsController, upload new map failed: {errorMessage}", errorMessage);
-            return BadRequest(errorMessage);
+            return new UploadMapResultModel(false, errorMessage);
         }
         
-        return Ok();
+        return new UploadMapResultModel(Success: true);
     }
     
     [HttpDelete("{mapFileName}")]

@@ -2,19 +2,16 @@
     display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  /* align-items: flex-end; */
 }
 .entity-card {
-    /* margin: auto; */
     margin-top: 10px;
     width: 200px;
-    height: 280px;
+    height: 300px;
     padding: 10px;
 
 }
 
 .map-card {
-    /* margin: auto; */
     margin-top: 10px;
     width: 75%;
     padding: 10px;
@@ -24,7 +21,7 @@
 .imageDiv{
     height: 600px;
     width: 100%;
-    
+    cursor: crosshair;
     background-size: 100% 100%;
 }
 
@@ -44,4 +41,5 @@
     border-radius: 50%;
     background-color: rgba(128, 0, 128, 0.4);
     position: relative;
+    pointer-events: none;
 }

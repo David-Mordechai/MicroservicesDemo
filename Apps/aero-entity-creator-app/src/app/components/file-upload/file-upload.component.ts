@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapsService } from 'src/app/services/maps.service';
 
 @Component({
@@ -13,27 +13,45 @@ export class FileUploadComponent implements OnInit {
 
   selectedFile!: File;
   fileForm!: FormGroup;
+  errorMessage: string = '';
+
+  get fileName() { return this.fileForm.get('fileName'); }
+
+  get file() { return this.fileForm.get('file'); }
 
   constructor(private mapsService: MapsService) { }
 
   ngOnInit(): void {
 
     this.fileForm = new FormGroup({
-      fileName: new FormControl(null),
-      file: new FormControl(null),
+      fileName: new FormControl('', [Validators.required]),
+      file: new FormControl(''),
     });
   }
-  
+
   onSelectFile(fileInput: any) {
     this.selectedFile = <File>fileInput.target.files[0];
   }
-  
+
   onSubmit(data: any) {
     const formData = new FormData();
     formData.append('fileName', data.fileName);
     formData.append('file', this.selectedFile);
-  
-    this.mapsService.uploadMap(formData);
-    this.fileForm.reset();
+
+    this.mapsService.uploadMap(formData).subscribe({
+      next: response => this.onFileUploaded(response),
+      error: err => console.log(err.error)
+    });
+  }
+
+  onFileUploaded(response: any) {
+    if (response.success) {
+      this.fileForm.reset();
+      this.notify.emit();
+      this.errorMessage = '';
+    } else {
+      this.errorMessage = response.errorMessage;
+      this.file?.setErrors({serverError: true});
+    }
   }
 }

@@ -6,19 +6,35 @@
             <mat-form-field appearance="standard">
                 <mat-label>Entity Title</mat-label>
                 <input type="text" matInput formControlName="title">
+                <mat-error *ngIf="title?.invalid && (title?.dirty || title?.touched)" color="warn">
+                    <div *ngIf="title?.errors?.['required']">
+                        Title is required.
+                    </div>
+                </mat-error>
             </mat-form-field>
     
             <mat-form-field appearance="standard">
                 <mat-label>Entity X Position</mat-label>
                 <input type="number" matInput formControlName="xPosition">
+                <mat-error *ngIf="xPosition?.invalid && (xPosition?.dirty || xPosition?.touched)" color="warn">
+                    <div *ngIf="xPosition?.errors?.['required']">
+                        X Position is required.
+                    </div>
+                </mat-error>
             </mat-form-field>
     
             <mat-form-field  appearance="standard">
                 <mat-label>Entity Y Position</mat-label>
                 <input type="number" matInput formControlName="yPosition">
+                <mat-error *ngIf="yPosition?.invalid && (yPosition?.dirty || yPosition?.touched)" color="warn">
+                    <div *ngIf="yPosition?.errors?.['required']">
+                        Y Position is required.
+                    </div>
+                </mat-error>
             </mat-form-field>
             <input type="number" hidden formControlName="mapWidth">
             <input type="mapHeight" hidden formControlName="yPosition">
+            <br>
             <button class="createButton" mat-raised-button color="primary" [disabled]="!mapEntityForm.valid">Create</button>
         </form>
     </mat-card>

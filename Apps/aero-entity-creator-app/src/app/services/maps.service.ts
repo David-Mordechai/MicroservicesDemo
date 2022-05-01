@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -11,6 +11,11 @@ interface getMapResponse {
     imageMetaData: string,
     imageBase64: string
   },
+}
+
+interface uploadMapResponse {
+  success: boolean,
+  errorMessage: string
 }
 
 @Injectable({
@@ -33,15 +38,8 @@ export class MapsService {
     return this.http.get<getMapResponse>(`${this.URL}mission`)
   }
 
-  uploadMap(formData: FormData) {
-    this.http.post(`${this.URL}maps`, formData, { observe: 'response' })
-    .subscribe((response) => {
-      if (response.status === 200) {
-        console.log('Image uploaded!')
-      } else {
-        console.log(response)
-      }
-    });
+  uploadMap(formData: FormData) :Observable<uploadMapResponse> {
+    return this.http.post<uploadMapResponse>(`${this.URL}maps`, formData);
   }
 
   deleteMap(mapName: string) : Observable<string> {

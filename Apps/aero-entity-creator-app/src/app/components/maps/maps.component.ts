@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatListItem, MatListOption, MatSelectionList } from '@angular/material/list';
 import { Observable, of } from 'rxjs';
 import { mapListItem } from 'src/app/models/mapListItem';
 import { MapsService } from 'src/app/services/maps.service';
@@ -23,6 +24,12 @@ export class MapsComponent implements OnInit {
 
   private loadData() {
     this.maps = this.mapsService.getMaps();
+    this.maps.subscribe(maps => {
+      let missionMap = maps.find(map=> map.isMissionMap);
+      if(missionMap){
+        this.loadMap(missionMap);
+      }
+    });
   }
 
   loadMap(selectedMap: mapListItem){
@@ -55,10 +62,12 @@ export class MapsComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(FileUploadComponent);
+    const dialogRef = this.dialog.open(FileUploadComponent,{
+      height: '320px',
+      width: '300px'
+    });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data)
+    dialogRef.componentInstance.notify.subscribe(() => {
       this.loadData();
     });
   }

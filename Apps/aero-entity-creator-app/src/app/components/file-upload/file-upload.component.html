@@ -1,22 +1,33 @@
-
 <h1 mat-dialog-title>Upload New Map</h1>
 <div mat-dialog-content>
     <form [formGroup]="fileForm">
-  
+
         <mat-form-field appearance="standard">
             <mat-label>File Name</mat-label>
             <input type="text" matInput formControlName="fileName">
+            <mat-error *ngIf="fileName?.invalid && (fileName?.dirty || fileName?.touched)" color="warn">
+                <div *ngIf="fileName?.errors?.['required']">
+                    File Name is required.
+                </div>
+            </mat-error>
         </mat-form-field>
-    
+        <br>
+        <br>
         <div>
-            <input type="file" formControlName="file" (change)="onSelectFile($event)" >
+            <input type="file" formControlName="file" (change)="onSelectFile($event)">
         </div>
         <br>
-        
+        <mat-error *ngIf="file?.invalid" class="alert alert-danger">
+            <div *ngIf="file?.errors?.['serverError']">
+                {{errorMessage}}
+            </div>
+        </mat-error>
     </form>
 </div>
 <div mat-dialog-actions>
-    <button type="button" (click)="onSubmit(fileForm.value)" mat-raised-button color="primary">Upload Map</button>
+    <button type="button" [disabled]="!fileForm.valid" (click)="onSubmit(fileForm.value)" mat-raised-button
+        color="primary">
+        Upload Map
+    </button>
     <button mat-button mat-dialog-close>Close</button>
 </div>
-

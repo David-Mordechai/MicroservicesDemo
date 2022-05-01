@@ -5,7 +5,7 @@
             <div class="listWrapper">
                 <button class="uploadBtn" mat-stroked-button color="primary" (click)="openDialog()">Upload New Map</button>
                 <mat-selection-list class="mat-list" [multiple]="false" *ngIf="(maps | async) as items">
-                    <mat-list-option *ngFor="let item of items" [value]="item.mapName" (click)="loadMap(item)">
+                    <mat-list-option *ngFor="let item of items" [value]="item.mapName" (click)="loadMap(item)" [selected]="item.isMissionMap">
                         <mat-icon mat-list-icon>map</mat-icon>
                         <div>
                             {{item.mapName}}

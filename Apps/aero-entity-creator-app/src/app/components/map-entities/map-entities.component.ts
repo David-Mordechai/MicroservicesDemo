@@ -15,18 +15,20 @@ export class MapEntitiesComponent implements OnInit {
 
   missionMap: string = '';
 
+  get title() { return this.mapEntityForm.get('title'); }
+  get xPosition() { return this.mapEntityForm.get('xPosition'); }
+  get yPosition() { return this.mapEntityForm.get('yPosition'); }
+
   mapEntityForm = this.formBuilder.group({
     title: new FormControl('', [Validators.required]),
-    xPosition: new FormControl(Number, [Validators.required]),
-    yPosition: new FormControl(Number, [Validators.required]),
+    xPosition: new FormControl(null, [Validators.required]),
+    yPosition: new FormControl(null, [Validators.required]),
     mapWidth: new FormControl(Number),
     mapHeight: new FormControl(Number)
   });
 
   constructor(private mapEntityService: MapEntityService,
-    private formBuilder: FormBuilder, private mapsService: MapsService) {
-    console.log("maps")
-  }
+    private formBuilder: FormBuilder, private mapsService: MapsService) { }
 
   ngOnInit(): void {
     this.loadMissionMap();
@@ -41,13 +43,11 @@ export class MapEntitiesComponent implements OnInit {
       this.mapEntityForm.controls['xPosition'].setValue(pointerEvent.offsetY);
       this.mapEntityForm.controls['mapWidth'].setValue(imageDiv.clientWidth);
       this.mapEntityForm.controls['mapHeight'].setValue(imageDiv.clientHeight);
-      console.log(this.mapEntityForm.value);
     });
   }
 
   onSubmit(formDirective: FormGroupDirective): void {
     this.mapEntityService.postMapEntity(this.mapEntityForm.value);
-    console.log('New map entity was submitted', this.mapEntityForm.value);
     this.mapEntityForm.reset();
     formDirective.resetForm();
   }
