@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Text.Json;
+using AeroMapPresentor.Core.Configurations;
 using AeroMapPresentor.Core.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,8 +11,8 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
 {
     private readonly ILogger<MainWindowViewModel> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IConfiguration _configuration;
     private byte[]? _imageSource;
+    private readonly Settings _settings;
 
     public byte[]? ImageSource
     {
@@ -19,7 +20,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
         set
         {
             _imageSource = value;
-            OnPropertyChanged("ImageSource");
+            OnPropertyChanged(nameof(ImageSource));
         }
     }
 
@@ -33,7 +34,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
     {
         _logger = logger;
         _httpClientFactory = httpClientFactory;
-        _configuration = configuration;
+        _settings = configuration.GetSection("Settings").Get<Settings>();
     }
 
     public async Task SetMissionMapImageSource()
@@ -41,7 +42,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
         try
         {
             using var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync(_configuration["missionMapApi"]);
+            var response = await client.GetAsync(_settings.MissionMapApi);
 
             var stringResult = await response.Content.ReadAsStringAsync();
             var resultModel = JsonSerializer.Deserialize<ResultModel>(stringResult,

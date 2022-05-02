@@ -17,27 +17,25 @@ public partial class MainWindow
     private readonly ILogger<MainWindow> _logger;
     private readonly ISignalRService _signalRService;
     private readonly Task<Task> _signalRTask;
-    private readonly IMainWindowViewModel _mainWindowViewModel;
+    private readonly IMainWindowViewModel _mainWindowViewModelModel;
     private readonly IEllipseEntityUiCreator _ellipseEntityUiCreator;
     private double _windowHeight;
     private double _windowWidth;
 
     public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService, 
-        IMainWindowViewModel mainWindowView, IEllipseEntityUiCreator ellipseEntityUiCreator)
+        IMainWindowViewModel mainWindowViewModel, IEllipseEntityUiCreator ellipseEntityUiCreator)
     {
-        InitializeComponent();
         _logger = logger;
-        _logger.LogInformation("Wpf, MainWindow");
-        
         _signalRService = signalRService;
         _signalRTask = Task.Factory.StartNew(ConfigureSignalR);
-
-        _mainWindowViewModel = mainWindowView;
+        _mainWindowViewModelModel = mainWindowViewModel;
         _ellipseEntityUiCreator = ellipseEntityUiCreator;
-        _mainWindowViewModel.SetMissionMapImageSource();
-        DataContext = _mainWindowViewModel;
 
-        this.SizeChanged += OnWindowSizeChanged;
+        _mainWindowViewModelModel.SetMissionMapImageSource();
+        DataContext = _mainWindowViewModelModel;
+        SizeChanged += OnWindowSizeChanged;
+        
+        InitializeComponent();
     }
 
     private void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
@@ -59,14 +57,14 @@ public partial class MainWindow
         Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal,
         async () =>
         {
-            await _mainWindowViewModel.SetMissionMapImageSource();
+            await _mainWindowViewModelModel.SetMissionMapImageSource();
             CanvasEntities.Children.Clear();
         });
     }
 
     private void NewMapPointCommand(string newMapEntity)
     {
-        _logger.LogInformation("AeroMapPresentor.Wpf => New Mission Map: {newMapEntity}", newMapEntity);
+        _logger.LogInformation("AeroMapPresentor.Wpf => New Map Point: {newMapEntity}", newMapEntity);
         Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, () =>
         {
             var mapEntity = JsonSerializer.Deserialize<MapEntity>(newMapEntity,

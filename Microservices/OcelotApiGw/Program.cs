@@ -11,9 +11,9 @@ builder.Host.ConfigureAppConfiguration((_, configurationBuilder) =>
 builder.Services.AddSignalR();
 builder.Services.AddOcelot();
 
-builder.Host.UseSerilog((ctx, lc) => lc
-    .WriteTo.Console()
-    .ReadFrom.Configuration(ctx.Configuration));
+builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) => 
+    loggerConfiguration.WriteTo.Console()
+    .ReadFrom.Configuration(hostBuilderContext.Configuration));
 
 builder.Services.AddCors(options =>
 {

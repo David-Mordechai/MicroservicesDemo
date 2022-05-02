@@ -1,3 +1,4 @@
+using MapEntitiesService.Configurations;
 using MessageBroker.Infrastructure;
 using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
 using Serilog;
@@ -9,17 +10,18 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog((ctx, lc) => lc
+    builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) => loggerConfiguration
         .WriteTo.Console()
-        .ReadFrom.Configuration(ctx.Configuration));
+        .ReadFrom.Configuration(hostBuilderContext.Configuration));
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
+    var settings = builder.Configuration.GetSection("Settings").Get<Settings>();
     builder.Services.AddMessageBrokerProducerServicesRabbitMq(new RabbitMqConfiguration
     {
-        BootstrapServers = builder.Configuration["brokerService"]
+        BootstrapServers = settings.BrokerService
     });
 
     var app = builder.Build();

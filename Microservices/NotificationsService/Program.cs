@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.Connections;
 using NotificationsService;
 using NotificationsService.Commands;
 using NotificationsService.Commands.Interfaces;
+using NotificationsService.Configurations;
 using NotificationsService.Hubs;
 using Serilog;
 
@@ -14,14 +15,15 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog((ctx, lc) => lc
+    builder.Host.UseSerilog((builderContext, loggerConfiguration) => loggerConfiguration
         .WriteTo.Console()
-        .ReadFrom.Configuration(ctx.Configuration));
+        .ReadFrom.Configuration(builderContext.Configuration));
 
+    var settings = builder.Configuration.GetSection("Settings").Get<Settings>();
     builder.Services.AddMessageBrokerConsumerServicesRabbitMq(
         new RabbitMqConfiguration
         {
-            BootstrapServers = builder.Configuration["brokerService"]
+            BootstrapServers = settings.BrokerService
         });
     builder.Services.AddSingleton<INewMapPointCommand, NewMapPointCommand>();
     builder.Services.AddSingleton<INewMapCommand, NewMapCommand>();

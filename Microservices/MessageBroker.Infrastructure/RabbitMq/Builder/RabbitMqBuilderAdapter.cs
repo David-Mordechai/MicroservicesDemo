@@ -24,7 +24,6 @@ internal class RabbitMqBuilderAdapter : IDisposable
 
     public void Dispose()
     {
-        //_connection?.Close();
         _connection?.Dispose();
         _channel?.Dispose();
         GC.SuppressFinalize(this);

@@ -17,7 +17,7 @@ internal class RabbitMqConsumerAdapter : IConsumerAdapter, IDisposable
         _channel = builderAdapter.Build();
     }
 
-    public void Subscribe(string topic, Action<string> consumeMessageHandler, CancellationToken cancellationToken)
+    public void Subscribe(string topic, Action<string>? consumeMessageHandler, CancellationToken cancellationToken)
     {
         try
         {
@@ -29,7 +29,7 @@ internal class RabbitMqConsumerAdapter : IConsumerAdapter, IDisposable
 
             var consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += (model, ea) =>
+            consumer.Received += (_, ea) =>
             {
                 if (cancellationToken.IsCancellationRequested)
                     throw new OperationCanceledException();

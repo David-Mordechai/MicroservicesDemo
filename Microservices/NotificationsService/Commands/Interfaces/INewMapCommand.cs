@@ -1,7 +1,6 @@
-﻿namespace NotificationsService.Commands.Interfaces
+﻿namespace NotificationsService.Commands.Interfaces;
+
+public interface INewMapCommand
 {
-    public interface INewMapCommand
-    {
-        (bool success, string errorMessage) NewMap(string message);
-    }
+    (bool success, string errorMessage) NewMap(string message);
 }

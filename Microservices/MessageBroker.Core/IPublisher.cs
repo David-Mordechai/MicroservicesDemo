@@ -1,9 +1,8 @@
 ﻿using MessageBroker.Core.Models;
 
-namespace MessageBroker.Core
+namespace MessageBroker.Core;
+
+public interface IPublisher
 {
-    public interface IPublisher
-    {
-        Task<MessageResultModel> Publish<T>(T message, string topic) where T : class;
-    }
+    Task<MessageResultModel> Publish<T>(T message, string topic) where T : class;
 }
