@@ -5,5 +5,5 @@ namespace AeroMapPresentor.Wpf.UiComponents.Interfaces;
 
 public interface IEllipseEntityUiCreator
 {
-    (StackPanel stackPanel, double top, double left) Create(MapEntity mapEntity, double windowHeight, double windowWidth);
+    StackPanel Create(MapEntity mapEntity);
 }

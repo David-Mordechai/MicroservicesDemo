@@ -8,11 +8,9 @@ namespace AeroMapPresentor.Wpf.UiComponents;
 
 internal class EllipseEntityUiCreator : IEllipseEntityUiCreator
 {
-    public (StackPanel stackPanel, double top, double left) Create(MapEntity mapEntity, double windowHeight, double windowWidth)
+    public StackPanel Create(MapEntity mapEntity)
     {
         const int ellipseSize = 20;
-        var top = windowHeight / mapEntity.MapHeight * mapEntity.XPosition - ellipseSize;
-        var left = windowWidth / mapEntity.MapWidth * mapEntity.YPosition - ellipseSize;
             
         var ellipse = new Ellipse
         {
@@ -33,6 +31,6 @@ internal class EllipseEntityUiCreator : IEllipseEntityUiCreator
         var stackPanel = new StackPanel();
         stackPanel.Children.Add(ellipse);
         stackPanel.Children.Add(textBlock);
-        return (stackPanel, top, left);
+        return stackPanel;
     }
 }

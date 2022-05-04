@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,7 @@ public partial class MainWindow
     private readonly IEllipseEntityUiCreator _ellipseEntityUiCreator;
     private double _windowHeight;
     private double _windowWidth;
+    private readonly List<(UIElement stackPanel, MapEntity mapEntity)> _mapPointsUiElementsList = new();
 
     public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService, 
         IMainWindowViewModel mainWindowViewModel, IEllipseEntityUiCreator ellipseEntityUiCreator)
@@ -37,13 +39,7 @@ public partial class MainWindow
         
         InitializeComponent();
     }
-
-    private void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
-    {
-         _windowHeight = e.NewSize.Height;
-         _windowWidth = e.NewSize.Width;
-    }
-
+    
     private async Task ConfigureSignalR()
     {
         await _signalRService.ConnectAsync();
@@ -59,9 +55,10 @@ public partial class MainWindow
         {
             await _mainWindowViewModelModel.SetMissionMapImageSource();
             CanvasEntities.Children.Clear();
+            _mapPointsUiElementsList.Clear();
         });
     }
-
+    
     private void NewMapPointCommand(string newMapEntity)
     {
         _logger.LogInformation("AeroMapPresentor.Wpf => New Map Point: {newMapEntity}", newMapEntity);
@@ -71,13 +68,38 @@ public partial class MainWindow
                 new JsonSerializerOptions(JsonSerializerDefaults.Web));
             
             if(mapEntity is null) return;
-            
-            var (stackPanel, top, left) = _ellipseEntityUiCreator.Create(mapEntity, _windowHeight, _windowWidth);
-            
+
+            var stackPanel = _ellipseEntityUiCreator.Create(mapEntity);
             CanvasEntities.Children.Add(stackPanel);
-            Canvas.SetTop(stackPanel, top);
-            Canvas.SetLeft(stackPanel, left);
+
+            _mapPointsUiElementsList.Add((stackPanel, mapEntity));
+            SetPosition(mapEntity, stackPanel);
         });
+    }
+
+    private void SetPosition(MapEntity mapEntity, UIElement stackPanel)
+    {
+        var top = _windowHeight / mapEntity.MapHeight * mapEntity.XPosition;
+        var left = _windowWidth / mapEntity.MapWidth * mapEntity.YPosition;
+        Canvas.SetTop(stackPanel, top);
+        Canvas.SetLeft(stackPanel, left);
+    }
+    
+    private void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        _windowHeight = e.NewSize.Height;
+        _windowWidth = e.NewSize.Width;
+
+        Task.Run(() =>
+        {
+            foreach (var (stackPanel, mapEntity) in _mapPointsUiElementsList)
+            {
+                Dispatcher.Invoke(DispatcherPriority.Render,() =>
+                {
+                    SetPosition(mapEntity, stackPanel);
+                });
+            }
+        });   
     }
 
     protected override void OnClosing(CancelEventArgs e)
