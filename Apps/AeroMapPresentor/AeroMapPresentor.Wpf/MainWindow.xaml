@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Grid.Column="0" Source="{Binding ImageSource}" Stretch="Fill" />
+        <Image x:Name="MapImage" Grid.Row="0" Grid.Column="0" Source="{Binding ImageSource}" Stretch="Uniform" />
         <Canvas Grid.Row="0" Grid.Column="0" x:Name="CanvasEntities"/>
     </Grid>
 </Window>

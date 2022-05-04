@@ -27,6 +27,8 @@ public partial class MainWindow
     public MainWindow(ILogger<MainWindow> logger, ISignalRService signalRService, 
         IMainWindowViewModel mainWindowViewModel, IEllipseEntityUiCreator ellipseEntityUiCreator)
     {
+        InitializeComponent();
+
         _logger = logger;
         _signalRService = signalRService;
         _signalRTask = Task.Factory.StartNew(ConfigureSignalR);
@@ -35,9 +37,7 @@ public partial class MainWindow
 
         _mainWindowViewModelModel.SetMissionMapImageSource();
         DataContext = _mainWindowViewModelModel;
-        SizeChanged += OnWindowSizeChanged;
-        
-        InitializeComponent();
+        MapImage.SizeChanged += OnWindowSizeChanged;
     }
     
     private async Task ConfigureSignalR()
@@ -79,8 +79,8 @@ public partial class MainWindow
 
     private void SetPosition(MapEntity mapEntity, UIElement stackPanel)
     {
-        var top = _windowHeight / mapEntity.MapHeight * mapEntity.XPosition;
-        var left = _windowWidth / mapEntity.MapWidth * mapEntity.YPosition;
+        var top = _windowHeight / mapEntity.MapHeight * mapEntity.XPosition - 10;
+        var left = _windowWidth / mapEntity.MapWidth * mapEntity.YPosition - 10;
         Canvas.SetTop(stackPanel, top);
         Canvas.SetLeft(stackPanel, left);
     }
@@ -89,6 +89,9 @@ public partial class MainWindow
     {
         _windowHeight = e.NewSize.Height;
         _windowWidth = e.NewSize.Width;
+
+        CanvasEntities.Height = _windowHeight;
+        CanvasEntities.Width = _windowWidth;
 
         Task.Run(() =>
         {
