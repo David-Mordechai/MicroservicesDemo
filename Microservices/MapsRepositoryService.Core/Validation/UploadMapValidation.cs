@@ -19,20 +19,32 @@ public class UploadMapValidation : IUploadMapValidation
         _fileExtensionValidator = fileExtensionValidator;
     }
 
-    public (bool Valid, string ErrorMessage) Validate(string? fileName, string? fileExtension, Stream? file)
+    public (bool Valid, string ErrorMessage) ValidateFileName(string? fileName, string fileExtension)
     {
         var validationResult = _fileNameValidator.IsNotEmpty(fileName);
         if (validationResult.Valid is false) return validationResult;
 
-        validationResult = _fileValidator.IsNotEmpty(file);
+        validationResult = _fileNameValidator.IsValid(fileName!);
+        if (validationResult.Valid is false) return validationResult;
+
+        validationResult = _fileNameValidator.IsUnique(fileName!, fileExtension);
+        if (validationResult.Valid is false) return validationResult;
+
+        return validationResult.Valid is false ? validationResult : 
+            (Valid: true, ErrorMessage: string.Empty);
+    }
+
+    public (bool Valid, string ErrorMessage) ValidateFile(string? fileExtension, Stream? file)
+    {
+        var validationResult = _fileValidator.IsNotEmpty(file);
         if (validationResult.Valid is false) return validationResult;
 
         validationResult = _fileValidator.IsFileSizeValid(file!);
         if (validationResult.Valid is false) return validationResult;
 
         validationResult = _fileExtensionValidator.IsFileExtensionValid(fileExtension!);
-        
-        return validationResult.Valid is false ? validationResult : 
+
+        return validationResult.Valid is false ? validationResult :
             (Valid: true, ErrorMessage: string.Empty);
     }
 }

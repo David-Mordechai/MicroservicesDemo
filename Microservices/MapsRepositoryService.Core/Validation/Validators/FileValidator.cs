@@ -13,10 +13,12 @@ public class FileValidator : IFileValidator
 
     public (bool Valid, string ErrorMessage) IsFileSizeValid(Stream file)
     {
-        const int oneMb = 1024; 
-        var fileSizeInKbs = file.Length / 1024;
-        return fileSizeInKbs > oneMb ? 
-            (false, $"File size has to be less then 1024 Kbs, actual file size is {fileSizeInKbs} Kbs.") : 
+        const int mb = 1024; 
+        const int kb = 1024;
+        var bytes = file.Length;
+        var fileSizeInKbs = bytes / kb;
+        return fileSizeInKbs > mb ? 
+            (false, $"File size has to be less then 1 MB, actual file size is {fileSizeInKbs} Kbs.") : 
             (true, string.Empty);
     }
 }

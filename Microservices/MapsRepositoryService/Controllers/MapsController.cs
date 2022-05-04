@@ -1,7 +1,6 @@
 ﻿using MapsRepositoryService.Core.Models;
 using MapsRepositoryService.Core.Repositories;
 using MapsRepositoryService.Core.Validation.Interfaces;
-using MessageBroker.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapsRepositoryService.Controllers;
@@ -11,8 +10,8 @@ namespace MapsRepositoryService.Controllers;
 public class MapsController : ControllerBase
 {
     public record ResultModel(bool Success, MapResultModel MapFileAsBase64String, string ErrorMessage = "" );
-    public record UploadMapViewModel(string? FileName, IFormFile? File);
-    public record UploadMapResultModel(bool Success, string ErrorMessage = "" );
+    public record UploadMapViewModel(string? FileName, IFormFile File);
+    public record UploadMapResultModel(bool Success, string ControlName = "", string ErrorMessage = "" );
 
     private readonly ILogger<MapsController> _logger;
     private readonly IMapsRepository _mapsRepository;
@@ -58,16 +57,16 @@ public class MapsController : ControllerBase
         try
         {
             var (fileName, file) = uploadMapViewModel;
-            var fileExtension = Path.GetExtension(file?.FileName);
+            var fileExtension = Path.GetExtension(file.FileName);
             var fileStream = file?.OpenReadStream();
 
-            // todo => more validations
-            // 1. duplicate file name, also expose api end point for client side validation
-            // 2. length file name, no white spaces, less then 10 characters, only numbers and latter allowed
+            var (fileValid, fileErrorMessage) = _uploadMapValidation.ValidateFile(fileExtension, fileStream);
+            if (fileValid is false)
+                return new UploadMapResultModel(Success: false, nameof(uploadMapViewModel.File), fileErrorMessage);
 
-            var (valid, errorMessage) = _uploadMapValidation.Validate(fileName, fileExtension, fileStream);
-            if (valid is false)
-                return new UploadMapResultModel(false, errorMessage);
+            var (fileNameValid, fileNameErrorMessage) = _uploadMapValidation.ValidateFileName(fileName, fileExtension);
+            if (fileNameValid is false)
+                return new UploadMapResultModel(Success: false, nameof(uploadMapViewModel.FileName), fileNameErrorMessage);
 
             var mapFileModel = new MapFileModel
             {
@@ -76,6 +75,7 @@ public class MapsController : ControllerBase
             };
 
             await _mapsRepository.AddMapAsync(mapFileModel);
+            return new UploadMapResultModel(Success: true);
         }
         catch (Exception e)
         {
@@ -83,8 +83,6 @@ public class MapsController : ControllerBase
             _logger.LogError(e, "MapsController, upload new map failed: {errorMessage}", errorMessage);
             return new UploadMapResultModel(false, errorMessage);
         }
-        
-        return new UploadMapResultModel(Success: true);
     }
     
     [HttpDelete("{mapFileName}")]

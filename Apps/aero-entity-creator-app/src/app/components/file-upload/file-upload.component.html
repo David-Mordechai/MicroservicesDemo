@@ -9,6 +9,9 @@
                 <div *ngIf="fileName?.errors?.['required']">
                     File Name is required.
                 </div>
+                <div *ngIf="fileName?.errors?.['serverError']">
+                    {{errorMessage}}
+                </div>
             </mat-error>
         </mat-form-field>
         <br>
@@ -16,7 +19,6 @@
         <div>
             <input type="file" formControlName="file" (change)="onSelectFile($event)">
         </div>
-        <br>
         <mat-error *ngIf="file?.invalid" class="alert alert-danger">
             <div *ngIf="file?.errors?.['serverError']">
                 {{errorMessage}}

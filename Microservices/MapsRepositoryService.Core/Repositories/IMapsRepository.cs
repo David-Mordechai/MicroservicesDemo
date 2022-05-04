@@ -11,4 +11,5 @@ public interface IMapsRepository
 
     Task SetMissionMapAsync(string mapName);
     Task<MapResultModel> GetMissionMapAsync();
+    Task<bool> IsExistsAsync(string fileName);
 }

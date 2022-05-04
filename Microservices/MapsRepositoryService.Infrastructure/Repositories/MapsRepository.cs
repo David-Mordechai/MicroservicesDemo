@@ -4,6 +4,7 @@ using MapsRepositoryService.Core.Repositories;
 using MapsRepositoryService.Infrastructure.MinIo;
 using Microsoft.Extensions.Logging;
 using Minio;
+using Minio.Exceptions;
 
 namespace MapsRepositoryService.Infrastructure.Repositories;
 
@@ -182,6 +183,28 @@ internal class MapsRepository : IMapsRepository
         }
         catch (Exception e)
         {
+            const string errorMessage = "GetMapByNameAsync method filed!";
+            _logger.LogError(e, errorMessage);
+            throw new InvalidOperationException(errorMessage);
+        }
+    }
+
+    public async Task<bool> IsExistsAsync(string fileName)
+    {
+        try
+        {
+            var args = new StatObjectArgs()
+                .WithBucket(BucketName)
+                .WithObject(fileName);
+
+            await _minIoClient.StatObjectAsync(args);
+            return true;
+        }
+        catch (Exception e)
+        {
+            if(e is ObjectNotFoundException)
+                return false;
+
             const string errorMessage = "GetMapByNameAsync method filed!";
             _logger.LogError(e, errorMessage);
             throw new InvalidOperationException(errorMessage);

@@ -31,6 +31,7 @@ export class FileUploadComponent implements OnInit {
 
   onSelectFile(fileInput: any) {
     this.selectedFile = <File>fileInput.target.files[0];
+    this.fileName?.updateValueAndValidity();
   }
 
   onSubmit(data: any) {
@@ -51,7 +52,12 @@ export class FileUploadComponent implements OnInit {
       this.errorMessage = '';
     } else {
       this.errorMessage = response.errorMessage;
-      this.file?.setErrors({serverError: true});
+      
+      if(response.controlName === "File")
+        this.file?.setErrors({serverError: true});
+
+      if(response.controlName === "FileName")
+        this.fileName?.setErrors({serverError: true});
     }
   }
 }
