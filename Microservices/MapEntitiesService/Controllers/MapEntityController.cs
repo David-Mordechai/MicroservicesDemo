@@ -1,5 +1,5 @@
-using MapEntitiesService.Configurations;
-using MessageBroker.Core;
+using MapEntitiesService.Core.Models;
+using MapEntitiesService.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapEntitiesService.Controllers;
@@ -8,22 +8,16 @@ namespace MapEntitiesService.Controllers;
 [Route("[controller]")]
 public class MapEntityController : ControllerBase
 {
-    private readonly ILogger<MapEntityController> _logger;
-    private readonly Settings _settings;
+    private readonly IMapEntityService _mapEntityService;
 
-    public MapEntityController(ILogger<MapEntityController> logger, IConfiguration configuration)
+    public MapEntityController(IMapEntityService mapEntityService)
     {
-        _logger = logger;
-        _settings = configuration.GetSection("Settings").Get<Settings>();
+        _mapEntityService = mapEntityService;
     }
 
-    public record MapEntity(string Title, double XPosition, double YPosition, double MapWidth, double MapHeight);
-
     [HttpPost]
-    public IActionResult Post([FromServices] IPublisher publisher, [FromBody]MapEntity mapEntity)
+    public void Post([FromBody]MapEntity mapEntity)
     {
-        _logger.LogInformation("Publishing new MapEntity - {mapEntity}", mapEntity);
-        publisher.Publish(mapEntity, topic: _settings.NewMapEntityTopic);
-        return Ok();
+        _mapEntityService.ProcessMapEntity(mapEntity);
     }
 }

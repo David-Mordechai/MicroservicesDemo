@@ -1,4 +1,4 @@
-using MapsRepositoryService.Configurations;
+using MapsRepositoryService.Core.Configurations;
 using MapsRepositoryService.Infrastructure;
 using MapsRepositoryService.Infrastructure.MinIo.Configuration;
 using MessageBroker.Infrastructure;
@@ -22,6 +22,8 @@ try
     builder.Services.AddSwaggerGen();
 
     var settings = builder.Configuration.GetSection("Settings").Get<Settings>();
+    builder.Services.AddSingleton(settings);
+
     builder.Services.AddMapsRepositoryServiceInfrastructure(new MinIoConfiguration
     {
         BootstrapServers = settings.MapDbService,

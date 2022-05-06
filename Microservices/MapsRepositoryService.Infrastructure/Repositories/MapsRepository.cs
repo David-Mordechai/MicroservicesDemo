@@ -72,7 +72,7 @@ internal class MapsRepository : IMapsRepository
         return result;
     }
 
-    public async Task<MapResultModel> GetMapByNameAsync(string mapFileName)
+    public async Task<ImageBase64FileModel> GetMapByNameAsync(string mapFileName)
     {
         try
         {
@@ -90,7 +90,7 @@ internal class MapsRepository : IMapsRepository
 
             var stat = await _minIoClient.GetObjectAsync(args);
             var ext = Path.GetExtension(stat.ObjectName).Replace(".", "");
-            var result = new MapResultModel
+            var result = new ImageBase64FileModel
             {
                 ImageMetaData = $"data:image/{ext};base64",
                 ImageBase64 = Convert.ToBase64String(bytes)
@@ -112,8 +112,8 @@ internal class MapsRepository : IMapsRepository
             var args = new PutObjectArgs()
                 .WithBucket(BucketName)
                 .WithObject(mapFileModel.FileName)
-                .WithStreamData(mapFileModel.MapFile)
-                .WithObjectSize(mapFileModel.MapFile!.Length)
+                .WithStreamData(mapFileModel.File)
+                .WithObjectSize(mapFileModel.File!.Length)
                 .WithContentType("application/octet-stream");
      
             await _minIoClient.PutObjectAsync(args);
@@ -171,13 +171,13 @@ internal class MapsRepository : IMapsRepository
         }
     }
     
-    public async Task<MapResultModel> GetMissionMapAsync()
+    public async Task<ImageBase64FileModel> GetMissionMapAsync()
     {
         try
         {
             var missionMap = await GetMissionMapNameAsync();
             if (string.IsNullOrWhiteSpace(missionMap))
-                return new MapResultModel();
+                return new ImageBase64FileModel();
 
             return await GetMapByNameAsync(missionMap);
         }

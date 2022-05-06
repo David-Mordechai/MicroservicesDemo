@@ -1,4 +1,4 @@
-﻿namespace MapsRepositoryService.Configurations;
+﻿namespace MapsRepositoryService.Core.Configurations;
 
 public class Settings
 {

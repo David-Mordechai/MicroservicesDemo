@@ -1,7 +1,3 @@
 ﻿namespace MapsRepositoryService.Core.Models;
 
-public class MapResultModel
-{
-    public string ImageMetaData { get; set; } = string.Empty;
-    public string ImageBase64 { get; set; } = string.Empty;
-}
+public record MapResultModel(bool Success, ImageBase64FileModel? MapFileAsBase64String, string ErrorMessage = "");

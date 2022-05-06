@@ -15,21 +15,21 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Services.AddSignalR();
     builder.Host.UseSerilog((builderContext, loggerConfiguration) => loggerConfiguration
         .WriteTo.Console()
         .ReadFrom.Configuration(builderContext.Configuration));
 
     var settings = builder.Configuration.GetSection("Settings").Get<Settings>();
+    builder.Services.AddSingleton(settings);
+
     builder.Services.AddMessageBrokerConsumerServicesRabbitMq(
-        new RabbitMqConfiguration
-        {
-            BootstrapServers = settings.BrokerService
-        });
+    new RabbitMqConfiguration
+    {
+        BootstrapServers = settings.BrokerService
+    });
     builder.Services.AddSingleton<INewMapPointCommand, NewMapPointCommand>();
     builder.Services.AddSingleton<INewMapCommand, NewMapCommand>();
-
-    builder.Services.AddSignalR();
-
     builder.Services.AddSingleton<NotificationsSubscriber>();
 
     var app = builder.Build();

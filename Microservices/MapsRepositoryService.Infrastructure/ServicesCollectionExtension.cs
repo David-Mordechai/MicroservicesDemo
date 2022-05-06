@@ -1,4 +1,6 @@
 ﻿using MapsRepositoryService.Core.Repositories;
+using MapsRepositoryService.Core.Services;
+using MapsRepositoryService.Core.Services.Interfaces;
 using MapsRepositoryService.Core.Validation;
 using MapsRepositoryService.Core.Validation.Interfaces;
 using MapsRepositoryService.Core.Validation.Validators;
@@ -22,5 +24,8 @@ public static class ServicesCollectionExtension
         services.AddScoped<IFileValidator, FileValidator>();
         services.AddScoped<IFileNameValidator, FileNameValidator>();
         services.AddScoped<IUploadMapValidation, UploadMapValidation>();
+
+        services.AddScoped<IMapService, MapService>();
+        services.AddScoped<IMapMissionService, MapMissionService>();
     }
 }

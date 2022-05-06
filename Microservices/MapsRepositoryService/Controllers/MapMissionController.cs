@@ -1,7 +1,5 @@
-﻿using MapsRepositoryService.Configurations;
-using MapsRepositoryService.Core.Models;
-using MapsRepositoryService.Core.Repositories;
-using MessageBroker.Core;
+﻿using MapsRepositoryService.Core.Models;
+using MapsRepositoryService.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapsRepositoryService.Controllers;
@@ -10,58 +8,24 @@ namespace MapsRepositoryService.Controllers;
 [Route("[controller]")]
 public class MapMissionController : ControllerBase
 {
-    private readonly ILogger<MapsController> _logger;
-    private readonly IMapsRepository _mapsRepository;
-    private readonly IPublisher _publisher;
-    private readonly Settings _settings;
+    private readonly IMapMissionService _mapMissionService;
 
-    public record ResultModel(bool Success, MapResultModel MapFileAsBase64String, string ErrorMessage = "");
-    public record SetMissionMapModel(string MapName);
+    public record SetMissionMapViewModel(string MapName);
 
-    public MapMissionController(
-        ILogger<MapsController> logger,
-        IMapsRepository mapsRepository,
-        IPublisher publisher,
-        IConfiguration configuration)
+    public MapMissionController(IMapMissionService mapMissionService)
     {
-        _logger = logger;
-        _mapsRepository = mapsRepository;
-        _publisher = publisher;
-        _settings = configuration.GetSection("Settings").Get<Settings>();
+        _mapMissionService = mapMissionService;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<MapResultModel> Get()
     {
-        try
-        {
-            var result = await _mapsRepository.GetMissionMapAsync();
-            return Ok(new ResultModel(Success: true, MapFileAsBase64String: result));
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "MapMissionController Get map by map name failed: {errorMessage}", e.Message);
-            return Ok(new ResultModel(Success: false, MapFileAsBase64String: new MapResultModel(), ErrorMessage: "Mission map not found"));
-        }
+        return await _mapMissionService.GetMissionMapAsync();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] SetMissionMapModel model)
+    public async Task<ResultModel> Post([FromBody] SetMissionMapViewModel viewModel)
     {
-        if (string.IsNullOrWhiteSpace(model.MapName))
-            return BadRequest("Map name is required!");
-
-        try
-        {
-            await _mapsRepository.SetMissionMapAsync(model.MapName);
-            await _publisher.Publish(model.MapName, _settings.NewMissionMapTopic);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            var errorMessage = $"Fail to delete {model.MapName} file!";
-            _logger.LogError(e, "MapsController, Set Mission Map method failed: {errorMessage}", errorMessage);
-            return Problem(errorMessage);
-        }
+        return await _mapMissionService.SetMissionMapAsync(viewModel.MapName);
     }
 }

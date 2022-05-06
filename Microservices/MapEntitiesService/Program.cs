@@ -1,4 +1,5 @@
-using MapEntitiesService.Configurations;
+using MapEntitiesService.Core.Configurations;
+using MapEntitiesService.Infrastructure;
 using MessageBroker.Infrastructure;
 using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
 using Serilog;
@@ -19,10 +20,7 @@ try
     builder.Services.AddSwaggerGen();
 
     var settings = builder.Configuration.GetSection("Settings").Get<Settings>();
-    builder.Services.AddMessageBrokerProducerServicesRabbitMq(new RabbitMqConfiguration
-    {
-        BootstrapServers = settings.BrokerService
-    });
+    builder.Services.AddMapEntityServiceInfrastructure(settings);
 
     var app = builder.Build();
 

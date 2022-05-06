@@ -9,23 +9,22 @@ public class NewMapCommand : INewMapCommand
 {
     private readonly ILogger<NewMapCommand> _logger;
     private readonly IHubContext<NotificationsHub> _hubContext;
-    private readonly IConfiguration _configuration;
+    private readonly Settings _settings;
 
     public NewMapCommand(
         ILogger<NewMapCommand> logger,
         IHubContext<NotificationsHub> hubContext,
-        IConfiguration configuration)
+        Settings settings)
     {
         _logger = logger;
         _hubContext = hubContext;
-        _configuration = configuration;
+        _settings = settings;
     }
 
     public (bool success, string errorMessage) NewMap(string message)
     {
         _logger.LogInformation("NotificationsService, New Map {mapFileName}", message);
-        var clientMethods = _configuration.GetSection("Settings").Get<Settings>();
-        _hubContext.Clients.All.SendAsync(clientMethods.NewMapClientMethod, message);
+        _hubContext.Clients.All.SendAsync(_settings.NewMapClientMethod, message);
         return (true, string.Empty);
     }
 }

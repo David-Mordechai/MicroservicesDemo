@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MapEntitiesService.Infrastructure\MapEntitiesService.Infrastructure.csproj" />
     <ProjectReference Include="..\MessageBroker.Infrastructure\MessageBroker.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -15,12 +15,12 @@ public class NotificationsSubscriber
         ISubscriber subscriber,
         INewMapPointCommand newMapPointCommand,
         INewMapCommand newMapCommand,
-        IConfiguration configuration)
+        Settings settings)
     {
         _subscriber = subscriber;
         _newMapPointCommand = newMapPointCommand;
         _newMapCommand = newMapCommand;
-        _settings = configuration.GetSection("Settings").Get<Settings>();
+        _settings = settings;
     }
 
     public void Subscribe()

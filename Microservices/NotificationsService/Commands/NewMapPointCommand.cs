@@ -9,23 +9,22 @@ public class NewMapPointCommand : INewMapPointCommand
 {
     private readonly ILogger<NewMapPointCommand> _logger;
     private readonly IHubContext<NotificationsHub> _hubContext;
-    private readonly IConfiguration _configuration;
+    private readonly Settings _settings;
 
     public NewMapPointCommand(
         ILogger<NewMapPointCommand> logger,
         IHubContext<NotificationsHub> hubContext,
-        IConfiguration configuration)
+        Settings settings)
     {
         _logger = logger;
         _hubContext = hubContext;
-        _configuration = configuration;
+        _settings = settings;
     }
 
     public (bool success, string errorMessage) NewMapPoint(string message)
     {
         _logger.LogInformation("NotificationsService, New MapPoint {mapEntity}", message);
-        var clientMethods = _configuration.GetSection("Settings").Get<Settings>();
-        _hubContext.Clients.All.SendAsync(clientMethods.NewMapPointClientMethod, message);
+        _hubContext.Clients.All.SendAsync(_settings.NewMapPointClientMethod, message);
         return (true, string.Empty);
     }
 }

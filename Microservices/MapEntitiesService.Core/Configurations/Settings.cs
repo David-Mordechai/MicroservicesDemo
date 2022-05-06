@@ -1,4 +1,4 @@
-﻿namespace MapEntitiesService.Configurations;
+﻿namespace MapEntitiesService.Core.Configurations;
 
 public class Settings
 {
