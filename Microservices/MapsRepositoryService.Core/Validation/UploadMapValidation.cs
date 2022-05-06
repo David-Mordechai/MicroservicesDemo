@@ -51,7 +51,7 @@ public class UploadMapValidation : IUploadMapValidation
         var validationResult = _fileNameValidator.IsNotEmpty(fileName);
         if (validationResult.Valid is false) return validationResult;
 
-        validationResult = _fileNameValidator.IsValid(fileName!);
+        validationResult = _fileNameValidator.IsValid(fileName!, fileExtension);
         if (validationResult.Valid is false) return validationResult;
 
         validationResult = _fileNameValidator.IsUnique(fileName!, fileExtension);

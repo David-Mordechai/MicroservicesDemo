@@ -79,8 +79,8 @@ public partial class MainWindow
 
     private void SetPosition(MapEntity mapEntity, UIElement stackPanel)
     {
-        var top = _windowHeight / mapEntity.MapHeight * mapEntity.XPosition - 10;
-        var left = _windowWidth / mapEntity.MapWidth * mapEntity.YPosition - 10;
+        var top = _windowHeight / mapEntity.MapHeight * mapEntity.XPosition - 15;
+        var left = _windowWidth / mapEntity.MapWidth * mapEntity.YPosition - 15;
         Canvas.SetTop(stackPanel, top);
         Canvas.SetLeft(stackPanel, left);
     }

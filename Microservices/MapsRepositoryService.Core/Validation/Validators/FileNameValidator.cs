@@ -29,10 +29,11 @@ public class FileNameValidator : IFileNameValidator
             (true, string.Empty);
     }
 
-    public (bool Valid, string ErrorMessage) IsValid(string fileName)
+    public (bool Valid, string ErrorMessage) IsValid(string fileName, string fileExtension)
     {
+        var fileNameWithoutFileExtension = fileName.Replace(fileExtension, string.Empty);
         var regex = new Regex("^[A-Za-z0-9]*$");
-        var isMatch = regex.IsMatch(fileName);
+        var isMatch = regex.IsMatch(fileNameWithoutFileExtension);
         return isMatch ? 
             (true, string.Empty) : 
             (false, "Only letters or numbers allowed.");

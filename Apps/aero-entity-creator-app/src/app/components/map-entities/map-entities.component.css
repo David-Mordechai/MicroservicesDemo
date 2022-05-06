@@ -1,14 +1,14 @@
-.mapEntityWrapper{
+.mapEntityWrapper {
     display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
+
 .entity-card {
     margin-top: 10px;
     width: 200px;
     height: 300px;
     padding: 10px;
-
 }
 
 .map-card {
@@ -18,8 +18,8 @@
     min-width: 800px;
 }
 
-.imageDiv{
-    height: 600px;
+.imageDiv {
+    height: 500px;
     width: 100%;
     cursor: crosshair;
     background-size: 100% 100%;
@@ -31,11 +31,11 @@
     align-items: flex-start;
 }
 
-.createButton{
+.createButton {
     width: 100%;
 }
 
-.target{
+.target {
     width: 32px;
     height: 32px;
     border-radius: 50%;

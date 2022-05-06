@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using AeroMapPresentor.Core.Models;
@@ -10,22 +11,23 @@ internal class EllipseEntityUiCreator : IEllipseEntityUiCreator
 {
     public StackPanel Create(MapEntity mapEntity)
     {
-        const int ellipseSize = 20;
-            
+        const int ellipseSize = 30;
         var ellipse = new Ellipse
         {
             Fill = Brushes.Purple,
-            Stroke = Brushes.MediumPurple,
+            Opacity = 0.5d,
             Width = ellipseSize,
-            Height = ellipseSize,
-            StrokeThickness = 2
+            Height = ellipseSize
         };
-
         var textBlock = new TextBlock
         {
             Foreground = Brushes.Purple,
+            Opacity = 0.8d,
             FontSize = 12,
-            Text = mapEntity.Title
+            Text = mapEntity.Title,
+            TextAlignment = TextAlignment.Center,
+            Width = ellipseSize,
+            TextWrapping = TextWrapping.WrapWithOverflow
         };
 
         var stackPanel = new StackPanel();
