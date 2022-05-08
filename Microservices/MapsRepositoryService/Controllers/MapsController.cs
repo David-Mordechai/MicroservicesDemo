@@ -8,7 +8,7 @@ namespace MapsRepositoryService.Controllers;
 [Route("[controller]")]
 public class MapsController : ControllerBase
 {
-    public record UploadMapViewModel(string? FileName, IFormFile File);
+    public record UploadMapModel(string? FileName, IFormFile File);
     
     private readonly IMapService _mapService;
 
@@ -30,9 +30,9 @@ public class MapsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<UploadMapResultModel> Post([FromForm] UploadMapViewModel uploadMapViewModel)
+    public async Task<UploadMapResultModel> Post([FromForm] UploadMapModel uploadMapModel)
     {
-        var (fileName, formFile) = uploadMapViewModel;
+        var (fileName, formFile) = uploadMapModel;
         var fileExtension = Path.GetExtension(formFile.FileName);
         var mapFileModel = new MapFileModel
         {

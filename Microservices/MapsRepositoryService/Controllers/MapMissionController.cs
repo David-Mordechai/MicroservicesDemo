@@ -10,7 +10,7 @@ public class MapMissionController : ControllerBase
 {
     private readonly IMapMissionService _mapMissionService;
 
-    public record SetMissionMapViewModel(string MapName);
+    public record SetMissionMapModel(string MapName);
 
     public MapMissionController(IMapMissionService mapMissionService)
     {
@@ -24,8 +24,8 @@ public class MapMissionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ResultModel> Post([FromBody] SetMissionMapViewModel viewModel)
+    public async Task<ResultModel> Post([FromBody] SetMissionMapModel setMissionMapModel)
     {
-        return await _mapMissionService.SetMissionMapAsync(viewModel.MapName);
+        return await _mapMissionService.SetMissionMapAsync(setMissionMapModel.MapName);
     }
 }
