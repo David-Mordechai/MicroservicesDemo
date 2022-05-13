@@ -2,7 +2,6 @@
 using System.Text.Json;
 using AeroMapPresentor.Core.Configurations;
 using AeroMapPresentor.Core.ViewModels;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace AeroMapPresentor.Infrastructure.ViewModels;
@@ -30,11 +29,11 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
     public record ResultModel(bool Success, MapResultModel MapFileAsBase64String, string ErrorMessage = "");
 
     public MainWindowViewModel(ILogger<MainWindowViewModel> logger, 
-        IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        IHttpClientFactory httpClientFactory, Settings settings)
     {
         _logger = logger;
         _httpClientFactory = httpClientFactory;
-        _settings = configuration.GetSection("Settings").Get<Settings>();
+        _settings = settings;
     }
 
     public async Task SetMissionMapImageSource()

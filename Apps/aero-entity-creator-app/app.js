@@ -3,6 +3,7 @@ const { app, BrowserWindow  } = require('electron')
 const url = require("url");
 const path = require("path");
 let appWindow
+
 function initWindow() {
   appWindow = new BrowserWindow({
     width: 1200,
@@ -13,14 +14,8 @@ function initWindow() {
     autoHideMenuBar: true
   });
 
-  // Electron Build Path
-  appWindow.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html`),
-      protocol: "file:",
-      slashes: true
-    })
-  );
+
+  appWindow.loadFile(`${path.join(__dirname, `/dist/index.html`)}`)
 
   // Initialize the DevTools.
   //appWindow.webContents.openDevTools()

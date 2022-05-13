@@ -2,7 +2,6 @@
 using AeroMapPresentor.Core.Services;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace AeroMapPresentor.Infrastructure.Services.SignalR;
@@ -14,11 +13,11 @@ public class SignalRService : ISignalRService
     private HubConnection _connection;
     private readonly Settings _settings;
 
-    public SignalRService(ILogger<SignalRService> logger, IConfiguration configuration,
+    public SignalRService(ILogger<SignalRService> logger, Settings settings,
         IRetryPolicy retryPolicy)
     {
         _logger = logger;
-        _settings = configuration.GetSection("Settings").Get<Settings>();
+        _settings = settings;
         _retryPolicy = retryPolicy;
         _connection = BuildConnection();
     }
@@ -36,7 +35,8 @@ public class SignalRService : ISignalRService
     {
         try
         {
-            if(_connection.State != HubConnectionState.Connected)
+            _logger.LogInformation("Wpf, SignalR ConnectAsync");
+            if (_connection.State != HubConnectionState.Connected)
                 await _connection.StartAsync();
         }
         catch (Exception ex)
@@ -49,13 +49,13 @@ public class SignalRService : ISignalRService
     {
         try
         {
+            _logger.LogInformation("Wpf, SignalR DisconnectAsync");
             await _connection.StopAsync();
             await _connection.DisposeAsync();
-
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "SignalRService => Start connection fail!");
+            _logger.LogError(ex, "SignalRService => Stop connection fail!");
         }
     }
 

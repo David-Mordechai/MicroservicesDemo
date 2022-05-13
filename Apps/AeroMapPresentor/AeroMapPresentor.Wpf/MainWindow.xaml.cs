@@ -17,7 +17,6 @@ public partial class MainWindow
 {
     private readonly ILogger<MainWindow> _logger;
     private readonly ISignalRService _signalRService;
-    private readonly Task<Task> _signalRTask;
     private readonly IMainWindowViewModel _mainWindowViewModelModel;
     private readonly IEllipseEntityUiCreator _ellipseEntityUiCreator;
     private double _windowHeight;
@@ -31,26 +30,26 @@ public partial class MainWindow
 
         _logger = logger;
         _signalRService = signalRService;
-        _signalRTask = Task.Factory.StartNew(ConfigureSignalR);
         _mainWindowViewModelModel = mainWindowViewModel;
         _ellipseEntityUiCreator = ellipseEntityUiCreator;
-
+        
+        ConfigureSignalR();
         _mainWindowViewModelModel.SetMissionMapImageSource();
         DataContext = _mainWindowViewModelModel;
         MapImage.SizeChanged += OnWindowSizeChanged;
     }
     
-    private async Task ConfigureSignalR()
+    private async void ConfigureSignalR()
     {
-        await _signalRService.ConnectAsync();
         _signalRService.NewMapPoint(NewMapPointCommand);
         _signalRService.NewMap(NewMissionMapCommand);
+        await _signalRService.ConnectAsync();
     }
 
     private void NewMissionMapCommand(string newMissionMapName)
     {
         _logger.LogInformation("AeroMapPresentor.Wpf => New Mission Map: {newMissionMapName}", newMissionMapName);
-        Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal,
+        Application.Current.Dispatcher.InvokeAsync(
         async () =>
         {
             await _mainWindowViewModelModel.SetMissionMapImageSource();
@@ -108,7 +107,6 @@ public partial class MainWindow
     protected override void OnClosing(CancelEventArgs e)
     {
         _signalRService.DisconnectAsync();
-        _signalRTask.Dispose();
         base.OnClosing(e);
     }
 }

@@ -30,7 +30,8 @@ try
     });
     builder.Services.AddSingleton<INewMapPointCommand, NewMapPointCommand>();
     builder.Services.AddSingleton<INewMapCommand, NewMapCommand>();
-    builder.Services.AddSingleton<NotificationsSubscriber>();
+    builder.Services.AddHostedService<Worker>();
+    //builder.Services.AddSingleton<NotificationsSubscriber>();
 
     var app = builder.Build();
 
@@ -39,8 +40,8 @@ try
         options.Transports = HttpTransportType.WebSockets;
     });
 
-    var notificationsSubscriber = app.Services.GetRequiredService<NotificationsSubscriber>();
-    notificationsSubscriber.Subscribe();
+    //var notificationsSubscriber = app.Services.GetRequiredService<NotificationsSubscriber>();
+    //notificationsSubscriber.Subscribe();
 
     app.Run();
 }

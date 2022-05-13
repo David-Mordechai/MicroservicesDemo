@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using AeroMapPresentor.Core.Configurations;
 using AeroMapPresentor.Infrastructure;
 using AeroMapPresentor.Wpf.UiComponents;
 using AeroMapPresentor.Wpf.UiComponents.Interfaces;
@@ -31,11 +32,12 @@ public partial class App
             })
             .UseSerilog((context, loggerConfiguration) =>
                 loggerConfiguration.ReadFrom.Configuration(context.Configuration))
-            .ConfigureServices(services =>
+            .ConfigureServices((context, services) =>
             {
                 services.AddHttpClient();
                 services.AddTransient<IEllipseEntityUiCreator, EllipseEntityUiCreator>();
-                services.AddAeroMapPresenterInfrastructureServices();
+                var settings = context.Configuration.GetSection("Settings").Get<Settings>();
+                services.AddAeroMapPresenterInfrastructureServices(settings);
                 services.AddSingleton<MainWindow>();
             }).Build();
     }

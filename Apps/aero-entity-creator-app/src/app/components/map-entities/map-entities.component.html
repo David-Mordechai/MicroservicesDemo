@@ -40,7 +40,7 @@
     </mat-card>
     
     <mat-card class="map-card">
-        <div class="imageDiv" #imageDiv [ngStyle]="{'background-image': 'url(' + missionMap + ')'}">
+        <div class="imageDiv" #imageDiv  [style.background-image]="missionMap !== '' ? 'url(' + missionMap + ')' : 'none'">
             <div *ngIf="(mapEntityForm.controls['yPosition'].value > 0 && mapEntityForm.controls['xPosition'].value > 0)" 
             [style.top.px]="mapEntityForm.controls['xPosition'].value - 16" 
             [style.left.px]="mapEntityForm.controls['yPosition'].value - 16" 

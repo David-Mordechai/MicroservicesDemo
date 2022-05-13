@@ -23,4 +23,10 @@ public class NotificationsHub : Hub
         _logger.LogInformation("SignalR: Disconnected!");
         return base.OnDisconnectedAsync(exception);
     }
+
+    protected override void Dispose(bool disposing)
+    {
+        _logger.LogInformation("SignalR: Dispose!");
+        base.Dispose(disposing);
+    }
 }

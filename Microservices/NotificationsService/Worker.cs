@@ -4,14 +4,14 @@ using NotificationsService.Configurations;
 
 namespace NotificationsService;
 
-public class NotificationsSubscriber
+public class Worker : BackgroundService
 {
     private readonly ISubscriber _subscriber;
     private readonly INewMapPointCommand _newMapPointCommand;
     private readonly INewMapCommand _newMapCommand;
     private readonly Settings _settings;
 
-    public NotificationsSubscriber(
+    public Worker(
         ISubscriber subscriber,
         INewMapPointCommand newMapPointCommand,
         INewMapCommand newMapCommand,
@@ -23,19 +23,10 @@ public class NotificationsSubscriber
         _settings = settings;
     }
 
-    public void Subscribe()
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        NewMapPointSubscribe();
-        NewMapSubscribe();
-    }
-
-    private void NewMapPointSubscribe()
-    {
-        _subscriber.Subscribe(_settings.NewMapPointTopic, _newMapPointCommand.NewMapPoint, CancellationToken.None);
-    }
-
-    private void NewMapSubscribe()
-    {
-        _subscriber.Subscribe(_settings.NewMapTopic, _newMapCommand.NewMap, CancellationToken.None);
+        _subscriber.Subscribe(_settings.NewMapPointTopic, _newMapPointCommand.NewMapPoint, stoppingToken);
+        _subscriber.Subscribe(_settings.NewMapTopic, _newMapCommand.NewMap, stoppingToken);
+        return Task.CompletedTask;
     }
 }
