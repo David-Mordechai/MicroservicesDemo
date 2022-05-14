@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Text.Json;
+using System.Net.Http.Json;
 using AeroMapPresentor.Core.Configurations;
 using AeroMapPresentor.Core.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -41,11 +41,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
         try
         {
             using var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync(_settings.MissionMapApi);
-
-            var stringResult = await response.Content.ReadAsStringAsync();
-            var resultModel = JsonSerializer.Deserialize<ResultModel>(stringResult,
-                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            var resultModel = await client.GetFromJsonAsync<ResultModel>(_settings.MissionMapApi);
 
             if (resultModel is { Success: true })
             {
