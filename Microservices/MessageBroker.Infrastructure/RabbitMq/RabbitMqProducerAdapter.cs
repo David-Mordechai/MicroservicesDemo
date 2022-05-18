@@ -17,7 +17,7 @@ internal class RabbitMqProducerAdapter : IProducerAdapter, IDisposable
         _channel = rabbitMqBuilder.Build();
     }
 
-    public Task<MessageResultModel> ProduceAsync(string topic, string message)
+    public Task<MessageBrokerResultModel> ProduceAsync(string topic, string message)
     {
         try
         {
@@ -30,7 +30,7 @@ internal class RabbitMqProducerAdapter : IProducerAdapter, IDisposable
             var messageBytes = Encoding.UTF8.GetBytes(message);
             _channel.BasicPublish(exchange: "", routingKey: topic, basicProperties: null, messageBytes);
 
-            return Task.FromResult(new MessageResultModel
+            return Task.FromResult(new MessageBrokerResultModel
             {
                 Message = $"Message: '{message}' delivered to clients",
                 Success = true

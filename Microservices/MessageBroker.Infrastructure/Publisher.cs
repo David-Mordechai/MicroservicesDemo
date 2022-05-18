@@ -19,7 +19,7 @@ internal class Publisher : IPublisher
         _producer = producer;
     }
 
-    public async Task<MessageResultModel> Publish<T>(T message, string topic) where T : class
+    public async Task<MessageBrokerResultModel> Publish<T>(T message, string topic) where T : class
     {
         try
         {
@@ -33,7 +33,7 @@ internal class Publisher : IPublisher
         catch (Exception e)
         {
             _logger.LogError(e, "Delivery failed: {errorMessage}", e.Message);
-            return new MessageResultModel
+            return new MessageBrokerResultModel
             {
                 Success = false,
                 ErrorMessage = "Delivery failed."

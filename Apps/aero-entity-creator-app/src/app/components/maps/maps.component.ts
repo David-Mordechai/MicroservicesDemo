@@ -55,7 +55,8 @@ export class MapsComponent implements OnInit {
   }
 
   setMissionMap(){
-    this.mapsService.setMissionMap(this.selectedMap!.mapName).subscribe(()=>{
+    this.mapsService.setMissionMap(this.selectedMap!.mapName).subscribe((result) =>{
+      console.log(result);
       this.loadData();
       this.selectedMap!.isMissionMap = true;
     });

@@ -45,12 +45,12 @@ public class MapMissionService : IMapMissionService
         try
         {
             await _mapsRepository.SetMissionMapAsync(mapName);
-            await _publisher.Publish(mapName, _settings.NewMissionMapTopic);
-            return new ResultModel(Success: true);
+            var result = await _publisher.Publish(mapName, _settings.NewMissionMapTopic);
+            return new ResultModel(Success: result.Success, ErrorMessage: result.ErrorMessage);
         }
         catch (Exception e)
         {
-            var errorMessage = $"Fail to delete {mapName} file!";
+            var errorMessage = $"Fail to set mission map: {mapName}!";
             _logger.LogError(e, "MapsController, Set Mission Map method failed: {errorMessage}", errorMessage);
             return new ResultModel(Success: false, ErrorMessage: errorMessage);
         }

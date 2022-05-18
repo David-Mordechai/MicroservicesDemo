@@ -4,5 +4,5 @@ namespace MessageBroker.Core;
 
 public interface IPublisher
 {
-    Task<MessageResultModel> Publish<T>(T message, string topic) where T : class;
+    Task<MessageBrokerResultModel> Publish<T>(T message, string topic) where T : class;
 }

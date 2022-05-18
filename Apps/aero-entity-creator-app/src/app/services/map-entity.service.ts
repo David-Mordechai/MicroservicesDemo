@@ -12,6 +12,7 @@ export class MapEntityService {
 
   public postMapEntity(formData: any) {
     return this.http.post(`${this.URL}mapEntity`, formData).subscribe({
+      next: (result) => console.log(result),
       error: error => console.log(error)
     });
   }

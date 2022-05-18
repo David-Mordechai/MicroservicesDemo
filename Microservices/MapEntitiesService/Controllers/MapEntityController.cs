@@ -1,5 +1,6 @@
 using MapEntitiesService.Core.Models;
 using MapEntitiesService.Core.Services.Interfaces;
+using MessageBroker.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapEntitiesService.Controllers;
@@ -16,8 +17,8 @@ public class MapEntityController : ControllerBase
     }
 
     [HttpPost]
-    public void Post([FromBody]MapEntity mapEntity)
+    public async Task<ResultModel> Post([FromBody]MapEntity mapEntity)
     {
-        _mapEntityService.ProcessMapEntity(mapEntity);
+        return await _mapEntityService.ProcessMapEntity(mapEntity);
     }
 }

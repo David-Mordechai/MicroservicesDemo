@@ -4,5 +4,5 @@ namespace MessageBroker.Infrastructure.Interfaces;
 
 internal interface IProducerAdapter
 {
-    Task<MessageResultModel> ProduceAsync(string topic, string message);
+    Task<MessageBrokerResultModel> ProduceAsync(string topic, string message);
 }

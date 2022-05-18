@@ -2,6 +2,7 @@
 using MapEntitiesService.Core.Models;
 using MapEntitiesService.Core.Services.Interfaces;
 using MessageBroker.Core;
+using MessageBroker.Core.Models;
 using Microsoft.Extensions.Logging;
 
 namespace MapEntitiesService.Core.Services;
@@ -19,9 +20,10 @@ public class MapEntityService : IMapEntityService
         _settings = settings;
     }
 
-    public void ProcessMapEntity(MapEntity mapEntity)
+    public async Task<ResultModel> ProcessMapEntity(MapEntity mapEntity)
     {
         _logger.LogInformation("Publishing new MapEntity - {mapEntity}", mapEntity);
-        _publisher.Publish(mapEntity, topic: _settings.NewMapEntityTopic);
+        var result = await _publisher.Publish(mapEntity, topic: _settings.NewMapEntityTopic);
+        return new ResultModel(Success: result.Success, ErrorMessage: result.ErrorMessage);
     }
 }
