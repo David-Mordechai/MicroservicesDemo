@@ -2,7 +2,6 @@
 using MapEntitiesService.Core.Models;
 using MapEntitiesService.Core.Services.Interfaces;
 using MessageBroker.Core;
-using MessageBroker.Core.Models;
 using Microsoft.Extensions.Logging;
 
 namespace MapEntitiesService.Core.Services;

@@ -1,7 +1,5 @@
 using MapEntitiesService.Core.Configurations;
 using MapEntitiesService.Infrastructure;
-using MessageBroker.Infrastructure;
-using MessageBroker.Infrastructure.RabbitMq.Builder.Configuration;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()

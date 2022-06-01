@@ -1,6 +1,5 @@
 using MapEntitiesService.Core.Models;
 using MapEntitiesService.Core.Services.Interfaces;
-using MessageBroker.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapEntitiesService.Controllers;

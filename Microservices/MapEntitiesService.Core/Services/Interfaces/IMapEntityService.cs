@@ -1,5 +1,4 @@
 ﻿using MapEntitiesService.Core.Models;
-using MessageBroker.Core.Models;
 
 namespace MapEntitiesService.Core.Services.Interfaces;
 
