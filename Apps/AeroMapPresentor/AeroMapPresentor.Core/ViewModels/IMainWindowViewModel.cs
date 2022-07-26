@@ -1,4 +1,6 @@
-﻿namespace AeroMapPresentor.Core.ViewModels;
+﻿using System.Threading.Tasks;
+
+namespace AeroMapPresentor.Core.ViewModels;
 
 public interface IMainWindowViewModel
 {

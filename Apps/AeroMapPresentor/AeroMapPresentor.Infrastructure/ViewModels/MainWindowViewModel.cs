@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 using AeroMapPresentor.Core.Configurations;
 using AeroMapPresentor.Core.ViewModels;
 using Microsoft.Extensions.Logging;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using System;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace AeroMapPresentor.Infrastructure.Services.SignalR;
 

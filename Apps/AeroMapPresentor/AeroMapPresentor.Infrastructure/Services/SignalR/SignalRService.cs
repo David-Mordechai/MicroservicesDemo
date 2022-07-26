@@ -1,4 +1,6 @@
-﻿using AeroMapPresentor.Core.Configurations;
+﻿using System;
+using System.Threading.Tasks;
+using AeroMapPresentor.Core.Configurations;
 using AeroMapPresentor.Core.Services;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
