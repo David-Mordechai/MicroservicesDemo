@@ -33,14 +33,14 @@ services:
       context: .
       dockerfile: MapsRepositoryService/Dockerfile
     depends_on:
-      - mapsrepositoryservice_db
+      - mapsrepositoryservicedb
       - aero_rabbitmq
     networks:
       - aero_network
  
-  mapsrepositoryservice_db:
+  mapsrepositoryservicedb:
     image: "minio/minio"
-    container_name: mapsrepositoryservice_db
+    container_name: mapsrepositoryservicedb
     ports:
       - 9000:9000
       - 9001:9001
