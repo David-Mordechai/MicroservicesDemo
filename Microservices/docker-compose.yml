@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: OcelotApiGw/Dockerfile
     ports:
-      - 5000:80
+      - "5000:80"
     depends_on:
       - aero_rabbitmq
     networks:
@@ -42,14 +42,14 @@ services:
     image: "minio/minio"
     container_name: mapsrepositoryservicedb
     ports:
-      - 9000:9000
-      - 9001:9001
+      - "9000:9000"
+      - "9001:9001"
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: access-key
       MINIO_ROOT_PASSWORD: secret-key
     volumes:
-      - C:\docker\data\minio:/data
+      - ../data/minio:/data
     networks:
       - aero_network
 
@@ -69,8 +69,8 @@ services:
     image: rabbitmq:3-management
     container_name: aero_rabbitmq
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - aero_network
   
@@ -78,10 +78,10 @@ services:
     image: datalust/seq
     container_name: aero_seq
     ports:
-      - 8003:80
-      - 5341:5341
+      - "8003:80"
+      - "5341:5341"
     volumes:
-      - C:\docker\data\seq:/data
+      - ../data/seq:/data
     environment:
       ACCEPT_EULA: "Y"
     networks:
