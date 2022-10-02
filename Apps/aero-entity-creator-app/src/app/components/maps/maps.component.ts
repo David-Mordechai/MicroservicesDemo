@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatListItem, MatListOption, MatSelectionList } from '@angular/material/list';
 import { Observable, of } from 'rxjs';
 import { mapListItem } from 'src/app/models/mapListItem';
 import { MapsService } from 'src/app/services/maps.service';
@@ -55,7 +54,7 @@ export class MapsComponent implements OnInit {
   }
 
   setMissionMap(){
-    this.mapsService.setMissionMap(this.selectedMap!.mapName).subscribe((result) =>{
+    this.mapsService.setMissionMap(this.selectedMap!.mapName).subscribe(() =>{
       this.loadData();
       this.selectedMap!.isMissionMap = true;
     });
