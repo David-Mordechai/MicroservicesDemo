@@ -17,7 +17,7 @@ export class MapsComponent implements OnInit {
   mapBase64!: Observable<string>;
   selectedMap: mapListItem | undefined;
   constructor(private mapsService: MapsService, public dialog: MatDialog) { }
-  
+
   ngOnInit(): void {
     this.loadData();
   }
@@ -34,7 +34,7 @@ export class MapsComponent implements OnInit {
 
   loadMap(selectedMap: mapListItem){
       this.mapsService.getMap(selectedMap.mapName).subscribe({next: (response) => {
-        if(response && response.success){ 
+        if(response && response.success){
           this.mapBase64 = of(`${response.mapFileAsBase64String.imageMetaData},${response.mapFileAsBase64String.imageBase64}`);
           this.selectedMap = selectedMap;
         }
@@ -56,7 +56,6 @@ export class MapsComponent implements OnInit {
 
   setMissionMap(){
     this.mapsService.setMissionMap(this.selectedMap!.mapName).subscribe((result) =>{
-      console.log(result);
       this.loadData();
       this.selectedMap!.isMissionMap = true;
     });

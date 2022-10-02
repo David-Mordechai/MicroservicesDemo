@@ -55,11 +55,12 @@ export class MapEntitiesComponent implements OnInit {
   loadMissionMap() {
     this.mapsService.getMissionMap().subscribe({
       next: (response) => {
+        this.missionMap = '';
+
         if (response && response.success) {
-          this.missionMap = `${response.mapFileAsBase64String.imageMetaData},${response.mapFileAsBase64String.imageBase64}`;
-        }
-        else {
-          this.missionMap = '';
+          const {imageMetaData, imageBase64} = response.mapFileAsBase64String;
+          if(imageMetaData !== '' && imageBase64 !== '')
+            this.missionMap = `${imageMetaData},${imageBase64}`;
         }
       },
     });
