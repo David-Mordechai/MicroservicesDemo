@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AeroMapPresentor.Core\AeroMapPresentor.Core.csproj" />
+      <ProjectReference Include="..\AeroMapPresentor.Infrastructure\AeroMapPresentor.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+      <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.1" />
+    </ItemGroup>
+
+</Project>
