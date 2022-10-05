@@ -32,7 +32,7 @@ public class MapMissionService : IMapMissionService
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "MapMissionController Get map by map name failed: {errorMessage}", e.Message);
+            _logger.LogError(e, "MapMissionController Get map by map name failed: {ErrorMessage}", e.Message);
             return new MapResultModel(Success: false, MapFileAsBase64String: null, ErrorMessage: "Mission map not found");
         }
     }
@@ -51,7 +51,7 @@ public class MapMissionService : IMapMissionService
         catch (Exception e)
         {
             var errorMessage = $"Fail to set mission map: {mapName}!";
-            _logger.LogError(e, "MapsController, Set Mission Map method failed: {errorMessage}", errorMessage);
+            _logger.LogError(e, "MapsController, Set Mission Map method failed: {ErrorMessage}", errorMessage);
             return new ResultModel(Success: false, ErrorMessage: errorMessage);
         }
     }

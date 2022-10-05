@@ -23,7 +23,7 @@ public class NewMapCommand : INewMapCommand
 
     public (bool success, string errorMessage) NewMap(string message)
     {
-        _logger.LogInformation("NotificationsService, New Map {mapFileName}", message);
+        _logger.LogInformation("NotificationsService, New Map {MapFileName}", message);
         _hubContext.Clients.All.SendAsync(_settings.NewMapClientMethod, message);
         return (true, string.Empty);
     }

@@ -25,12 +25,12 @@ internal class Subscriber : ISubscriber
             {
                 var (success, errorMessage) = consumeMessageHandler.Invoke(consumeMessage);
                 if (success is false)
-                    _logger.LogError("Fail to process message, {errorMessage}", errorMessage);
+                    _logger.LogError("Fail to process message, {ErrorMessage}", errorMessage);
             }, cancellationToken);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Subscriber.Subscribe failed: {errorMessage}", e.Message);
+            _logger.LogError(e, "Subscriber.Subscribe failed: {ErrorMessage}", e.Message);
         }
     }
 }

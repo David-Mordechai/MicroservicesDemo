@@ -21,7 +21,7 @@ public class MapEntityService : IMapEntityService
 
     public async Task<ResultModel> ProcessMapEntity(MapEntity mapEntity)
     {
-        _logger.LogInformation("Publishing new MapEntity - {mapEntity}", mapEntity);
+        _logger.LogInformation("Publishing new MapEntity - {MapEntity}", mapEntity);
         var result = await _publisher.Publish(mapEntity, topic: _settings.NewMapEntityTopic);
         return new ResultModel(Success: result.Success, ErrorMessage: result.ErrorMessage);
     }

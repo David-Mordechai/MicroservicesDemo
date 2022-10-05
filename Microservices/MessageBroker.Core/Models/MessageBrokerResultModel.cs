@@ -2,7 +2,7 @@
 
 public class MessageBrokerResultModel
 {
-    public string Message { get; set; } = string.Empty;
-    public bool Success { get; set; }
-    public string ErrorMessage { get; set; } = string.Empty;
+    public string Message { get; init; } = string.Empty;
+    public bool Success { get; init; }
+    public string ErrorMessage { get; init; } = string.Empty;
 }

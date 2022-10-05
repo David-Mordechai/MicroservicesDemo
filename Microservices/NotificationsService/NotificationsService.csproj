@@ -21,10 +21,4 @@
     <ProjectReference Include="..\MessageBroker.Infrastructure\MessageBroker.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="MessageBroker.Core">
-      <HintPath>..\MessageBroker.Core\bin\Debug\net6.0\MessageBroker.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

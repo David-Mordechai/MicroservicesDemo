@@ -1,7 +1,13 @@
-﻿namespace MapsRepositoryService.Core.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace MapsRepositoryService.Core.Models;
 
 public class ImageBase64FileModel
 {
-    public string ImageMetaData { get; set; } = string.Empty;
-    public string ImageBase64 { get; set; } = string.Empty;
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")] 
+    public string ImageMetaData { get; init; } = string.Empty;
+
+    
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")] 
+    public string ImageBase64 { get; init; } = string.Empty;
 }

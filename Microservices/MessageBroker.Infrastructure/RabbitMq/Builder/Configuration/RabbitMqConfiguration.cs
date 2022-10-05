@@ -2,5 +2,5 @@
 
 public class RabbitMqConfiguration
 {
-    public string? BootstrapServers { get; set; }
+    public string? BootstrapServers { get; init; }
 }

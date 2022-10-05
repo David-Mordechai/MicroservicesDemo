@@ -2,7 +2,7 @@
 
 public class MapFileModel
 {
-    public string? FileName { get; set; } = string.Empty;
-    public Stream? File { get; set; }
-    public string? FileExtension { get; set; }
+    public string? FileName { get; init; } = string.Empty;
+    public Stream? File { get; init; }
+    public string? FileExtension { get; init; }
 }

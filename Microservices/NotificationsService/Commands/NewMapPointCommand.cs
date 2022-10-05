@@ -23,7 +23,7 @@ public class NewMapPointCommand : INewMapPointCommand
 
     public (bool success, string errorMessage) NewMapPoint(string message)
     {
-        _logger.LogInformation("NotificationsService, New MapPoint {mapEntity}", message);
+        _logger.LogInformation("NotificationsService, New MapPoint {MapEntity}", message);
         _hubContext.Clients.All.SendAsync(_settings.NewMapPointClientMethod, message);
         return (true, string.Empty);
     }

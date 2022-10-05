@@ -26,13 +26,13 @@ internal class Publisher : IPublisher
             var messageAsJson = JsonSerializer.Serialize(message);
             
             var deliveryResult = await _producer.ProduceAsync(topic, messageAsJson);
-            _logger.LogInformation("Delivery success: {deliveryResult}", deliveryResult);
+            _logger.LogInformation("Delivery success: {DeliveryResult}", deliveryResult.Message);
 
             return deliveryResult;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Delivery failed: {errorMessage}", e.Message);
+            _logger.LogError(e, "Delivery failed: {ErrorMessage}", e.Message);
             return new MessageBrokerResultModel
             {
                 Success = false,

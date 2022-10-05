@@ -37,7 +37,7 @@ public class MapService : IMapService
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "MapsController Get map by map name failed: {errorMessage}", e.Message);
+            _logger.LogError(e, "MapsController Get map by map name failed: {ErrorMessage}", e.Message);
             return new MapResultModel(Success: false, MapFileAsBase64String: null, ErrorMessage: $"Map {mapName} not found");
         }
     }
@@ -55,7 +55,7 @@ public class MapService : IMapService
         catch (Exception e)
         {
             const string errorMessage = "Fail to upload!";
-            _logger.LogError(e, "MapsController, upload new map failed: {errorMessage}", errorMessage);
+            _logger.LogError(e, "MapsController, upload new map failed: {ErrorMessage}", errorMessage);
             return new UploadMapResultModel(false, errorMessage);
         }
     }
@@ -73,7 +73,7 @@ public class MapService : IMapService
         catch (Exception e)
         {
             var errorMessage = $"Fail to delete {mapName} file!";
-            _logger.LogError(e, "MapsController, Map delete failed: {errorMessage}", errorMessage);
+            _logger.LogError(e, "MapsController, Map delete failed: {ErrorMessage}", errorMessage);
             return new ResultModel(Success: false, ErrorMessage: errorMessage); 
         }
     }

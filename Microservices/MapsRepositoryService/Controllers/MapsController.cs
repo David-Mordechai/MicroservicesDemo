@@ -1,4 +1,5 @@
-﻿using MapsRepositoryService.Core.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using MapsRepositoryService.Core.Models;
 using MapsRepositoryService.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace MapsRepositoryService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[SuppressMessage("ReSharper", "RouteTemplates.ActionRoutePrefixCanBeExtractedToControllerRoute")]
 public class MapsController : ControllerBase
 {
     public record UploadMapModel(string? FileName, IFormFile File);

@@ -31,8 +31,7 @@ internal class RabbitMqConsumerAdapter : IConsumerAdapter, IDisposable
 
             consumer.Received += (_, ea) =>
             {
-                if (cancellationToken.IsCancellationRequested)
-                    throw new OperationCanceledException();
+                cancellationToken.ThrowIfCancellationRequested();
 
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);

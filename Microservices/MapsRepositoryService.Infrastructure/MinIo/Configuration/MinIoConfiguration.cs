@@ -2,7 +2,7 @@
 
 public class MinIoConfiguration
 {
-    public string BootstrapServers { get; set; } = string.Empty;
-    public string RootUser { get; set; } = string.Empty;
-    public string RootPassword { get; set; } = string.Empty;
+    public string BootstrapServers { get; init; } = string.Empty;
+    public string RootUser { get; init; } = string.Empty;
+    public string RootPassword { get; init; } = string.Empty;
 }
