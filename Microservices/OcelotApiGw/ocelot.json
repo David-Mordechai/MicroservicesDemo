@@ -77,8 +77,8 @@
       ]
     },
     {
-      "DownstreamPathTemplate": "/ws/negotiate",
-      "UpstreamPathTemplate": "/ws/negotiate",
+      "DownstreamPathTemplate": "/ws/{catchAll}",
+      "UpstreamPathTemplate": "/ws/{catchAll}",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         {
