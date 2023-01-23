@@ -16,4 +16,8 @@
 		<ProjectReference Include="..\AeroMapPresentor.Core\AeroMapPresentor.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+
 </Project>

@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:AeroMapPresenter.Mvvm.Wpf.ViewModels">
+
+    <DataTemplate DataType="{x:Type viewModels:MainWindowViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Grid.Column="0" Source="{Binding ImageSource, TargetNullValue={x:Null}}" Stretch="Uniform" />
+            <ListView ItemsSource="{Binding Entities}"/>
+            <!--<Canvas Grid.Row="0" Grid.Column="0" />-->
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:MapEntityViewModel}">
+        <StackPanel>
+            <Ellipse Fill="Purple" 
+                     Opacity="0.5" 
+                     Width ="30" 
+                     Height = "30"/>
+
+            <TextBox Foreground ="Purple" 
+                     Opacity="0.8" 
+                     FontSize="12" 
+                     Text="{Binding Title}" 
+                     TextAlignment="Center" 
+                     TextWrapping="WrapWithOverflow" />
+        </StackPanel>
+    </DataTemplate>
+
+</ResourceDictionary>
