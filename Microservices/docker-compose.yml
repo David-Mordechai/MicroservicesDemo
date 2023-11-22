@@ -39,7 +39,7 @@ services:
       - aero_network
  
   mapsrepositoryservicedb:
-    image: "minio/minio"
+    image: "minio/minio:RELEASE.2022-09-22T18-57-27Z"
     container_name: mapsrepositoryservicedb
     ports:
       - "9000:9000"
